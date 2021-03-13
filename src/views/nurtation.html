@@ -1,0 +1,392 @@
+<html>
+
+<head>
+    <style>
+        #app .section1 {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 2%;
+            justify-content: center;
+            align-items: center;
+            width: 90%;
+            height: 50%;
+            margin: auto;
+        }
+
+        .succ-msg {
+            font-size: 80pt;
+        }
+
+        .err-msg {
+            color: red;
+            font-size: 40pt;
+            font-weight: bold;
+        }
+
+        .search-section {
+            position: relative;
+            margin-bottom: -10%;
+        }
+
+        .search-icon {
+            position: absolute;
+            width: 8%;
+            height: 37pt;
+            background-color: white;
+            background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAVCAYAAACpF6WWAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAACYktHRAD/h4/MvwAAAAl2cEFnAAABKgAAASkAUBZlMQAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAxMy0wNC0xMFQwNjo1OTowNy0wNzowMI5BiVEAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMTMtMDQtMTBUMDY6NTk6MDctMDc6MDD/HDHtAAAAGXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAABF0RVh0VGl0bGUAc2VhcmNoLWljb27Cg+x9AAACKklEQVQ4T6WUSavqQBCFK+2sII7gShFXLpUsBBHFf+1KcAQFwaWiolsnnBDn++4p0iHRqPDuByFJd/Wp6qrqVn5+IQP3+52m0ymtVis6Ho885na7KRgMUiKR4O9vmEQHgwGNx2NyOp0khCBFUXgcJo/Hg67XK8ViMcpkMjz+Dl200+nQZrMhh8PBE4gYQgDidrudvzEOm2KxyP9WsCginM1mHKEUS6VSFA6HOWI4G41GPAfx2+1GgUCAVFXVZMwovwY/lUqFPB4PiyFn+XxemzbT6/VovV6z8Ol0olwux+LPCBQFEQKIvhME2WyWbWGHFCD/VghUGVvE1rDlb6TTabbFmuVyqY2aEWgbFALeI5GINvyeUCjEtlgju+IZoRWfkS30CURoxFJUNjMEt9stf38CNjJKIFvNiMBJgTebzcZt843hcMhCELWqPBDxeJwulwtvC/3X7/e1qVfgFD0rC5tMJrUZM8Lr9VI0GmVBRDCfz6nZbHI/Sna7HXW7XZpMJtxSiBIP1lmhH9NqtaqfGKQDTmQREBnSgwfmMqfYYblc1o+2xHShtNttLgSiee4EmMEp3hDBPJzikimVSuRyuTTLJ1GwWCz4pCB3UhiL/X4/Hw50C5zjLSM+n898weCogxdRIzAGxigAdtNqtV6EC4UC+Xy+z6Kf2O/31Gg0TMK4ZBDxf4uCw+FA9XpdF0aaUOg/iQLcHbVaTb/p0Cl/FgXIJ/oYnaCqKv0DC6dltH6Ks84AAAAASUVORK5CYII=);
+            background-position: 2% 50%;
+            background-repeat: no-repeat;
+            background-size: 70%;
+            bottom: 0;
+            left: 4%;
+
+        }
+
+        .search {
+            width: 100%;
+            height: 20%;
+            box-sizing: border-box;
+            border: 2pt solid #ccc;
+            border-radius: 28pt;
+            font: inherit;
+            text-indent: 1em;
+            font-weight: bold;
+            font-size: 53pt;
+            padding: .8em;
+            margin: 0;
+            outline: 0;
+        }
+
+        input[type=date] {
+            width: 100%;
+            height: 20%;
+            padding: 10px;
+            border-radius: 28pt;
+            border: 1px solid #ccc;
+            background: #fff;
+            box-shadow: none;
+            box-sizing: border-box;
+            font-size: 53pt;
+            text-indent: 1em;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            align-items: center;
+            display: -webkit-inline-flex;
+            font-family: monospace;
+            padding-inline-start: 1px;
+            cursor: default;
+            overflow: hidden;
+            padding: .8em;
+        }
+
+        input[type=button] {
+            margin-top: 4%;
+            border: none;
+            border-radius: 28pt;
+            cursor: pointer;
+            width: 100%;
+            height: 70pt;
+            padding: .5%;
+            font-size: 30pt;
+            color: white;
+            background-color: #0070BF;
+            transition: background-color .4s;
+        }
+
+        input[type=button]:hover {
+            background-color: aqua;
+        }
+
+        span {
+            font-size: 42pt;
+        }
+
+        .search-find-food {
+            margin-bottom: 8%;
+        }
+
+        .search-diet {
+            width: 100%;
+            height: 30%;
+        }
+
+        .section-form {
+            margin-top: 1%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 2%;
+            justify-content: center;
+            align-items: center;
+            width: 90%;
+            height: 25%;
+            margin: 0 auto;
+        }
+
+        .section-form>h2 {
+            font-weight: bold;
+            font-size: 50pt;
+            margin: 2% 0;
+        }
+
+        .section-form>p {
+            font-size: 40pt;
+            margin: 0;
+        }
+
+        .section1-form {
+            height: 12%;
+        }
+
+        .section2 {
+            width: 100%;
+            height: 20%;
+            box-sizing: border-box;
+            border: 2pt solid #ccc;
+            border-radius: 28pt;
+            font: inherit;
+            text-indent: 1em;
+            font-weight: bold;
+            font-size: 53pt;
+            padding: .8em;
+            margin: 0;
+            outline: 0;
+        }
+
+        .section2:focus {
+            background-color: white;
+            background-position: 10pt 10pt;
+        }
+
+        .r-btn {
+            width: 30%;
+            height: 20%;
+        }
+
+        .chart-section {
+            width: 95%;
+            height: 95%;
+            margin: 0 auto;
+            margin-top: 2%;
+        }
+
+        @media(min-width: 1024pt) {
+            .seatch {
+                background-size: 3%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <div class="section1" v-if="result === ''">
+            <div class="search-find-food">
+                <label class="search-section">
+                    <div class="search-icon"></div>
+                    <input class="search" type="text" name="food" v-model="food" placeholder="請輸入食物名稱">
+                </label>
+                <input v-on:click="getFoodInfo" type="button" value="搜尋">
+                <div class="err-msg" v-if="err !== ''">{{err}}</div>
+            </div>
+
+            <div class="search-diet">
+                <input type="date" v-model="dateTime">
+                <input type="button" v-on:click="getDateRecord" value="搜尋飲食紀錄">
+                <div class="empty-msg" v-if="empty !== ''">{{empty}}</div>
+            </div>
+        </div>
+        <div class="section-form section1-form" v-if="result !== '' && result !== '請輸入食物名稱'">
+            <h2>{{result.name}}</h2>
+            <p>{{result.calories}} cal / {{result.unit}}</p>
+        </div>
+        <div class="succ-msg" v-if="succ !== ''">{{succ}}</div>
+        <div class="section-form" v-if="result !== '' && result !== '請輸入食物名稱'">
+            <span>幾份?</span>
+            <input class="section2" type="text" v-model="unit" placeholder="吃多少">
+            <input class="r-btn" type="button" v-on:click="recordDietaryRecords" value="紀錄">
+            <input class="r-btn" type="button" v-on:click="prevStep" value="上一步">
+        </div>
+    </div>
+    <div class="chart-section">
+        <canvas id="pie-chart"></canvas>
+    </div>
+</body>
+
+</html>
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+
+<script>
+    const liffID = '1655708537-8xKnrzvx';
+    let app = new Vue({
+        el: '#app',
+        data: {
+            profile: null,
+            result: "",
+            food: "",
+            unit: 1,
+            err: "",
+            succ: "",
+            empty: "",
+            dateTime: "2021-03-06",
+            chart: null
+        },
+        mounted: (() => {
+            const self = this;
+            liff.init({
+                liffId: '1655708537-8xKnrzvx'
+            }).then(() => {
+                if (!liff.isLoggedIn()) {
+                    liff.login().then(r => {
+                        liff.getProfile().then(p => {
+                            self.profile = p;
+                        });
+                    });
+                } else {
+                    liff.getProfile().then(p => {
+                        self.profile = p;
+                    });
+                }
+            }).catch((err) => {
+                console.log('初始化失敗')
+            });
+        }),
+        methods: {
+            getFoodInfo: function () {
+                const self = this;
+
+                //https://hunk-helper.herokuapp.com http://localhost:8080
+                if (self.food !== "") {
+                    axios.get('https://hunk-helper.herokuapp.com/getFoodInfo', { params: { food: self.food } }).then(res => {
+                        self.result = res.data;
+                        self.err = "";
+                        self.initFoodInfoPie();
+                    }).catch((err) => { });
+                } else {
+                    self.err = "請輸入內容";
+                }
+            },
+            recordDietaryRecords: function () {
+                const self = this;
+                const date = new Date();
+                self.result.ingredients.forEach(e => {
+                    if (e.value !== "--") {
+                        e.value = Math.round(e.value * self.unit);
+                    } else {
+                        e.value = '0';
+                    }
+                });
+
+                self.result.calories = Math.round(self.result.calories * self.units);
+                self.result.unit = self.unit;
+                self.initFoodInfoPie();
+
+                axios.get('https://hunk-helper.herokuapp.com/recordDietary',
+                    { params: { userId: self.profile['userId'], result: self.result, date: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}` } })
+                    .then(res => {
+                        console.log('Success');
+                        if (res.data === true) {
+                            liff.closeWindow();
+                        } else {
+                            self.err = "紀錄失敗";
+                            self.succ = "";
+                        }
+                    });
+
+            },
+            prevStep: function () {
+                const self = this;
+                self.result = '';
+                self.food = '';
+                self.chart.destroy();
+            },
+            getDateRecord: function () {
+                const self = this;
+                console.log(self.dateTime);
+                let dt = self.dateTime.split('-');
+                axios.get('https://hunk-helper.herokuapp.com/getDateDietaryRecord',
+                    { params: { userId: self.profile['userId'], date: `${dt[0]}-${parseInt(dt[1])}-${parseInt(dt[2])}` } })
+                    .then(res => {
+                        if (res.data) {
+                            console.log("");
+                            liff.closeWindow();
+                        } else {
+                            self.empty = '沒有紀錄';
+                        }
+                    })
+            },
+            initFoodInfoPie: function () {
+                const self = this;
+                const pc = document.getElementById('pie-chart');
+                let names = [];
+                let values = [];
+                let colors = [];
+
+                self.result.ingredients.forEach(i => {
+                    const rgb = self.initColor();
+                    if (i['value'] !== '--' && i['value'] !== '0') {
+                        colors.push(`rgba(${rgb['r']}, ${rgb['g']}, ${rgb['b']}, 1)`);
+                        names.push(`${i['name']}: ${i['value']}`);
+                        values.push(parseInt(i['value']));
+                    }
+                });
+
+                self.chart = new Chart(pc, {
+                    type: 'pie',
+                    data: {
+                        labels: names,
+                        datasets: [{
+                            label: 'Food Info',
+                            data: values,
+                            backgroundColor: colors
+                        }],
+                        hoverOffset: 4
+                    },
+                    options: {
+                        titles: {
+                            display: true,
+                            text: "2",
+                            fontColor: 'black',
+                            fontSize: '100',
+                            position: 'top'
+                        },
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                boxWidth: 50,
+                                fontColor: 'rgb(255, 99, 132)',
+                                fontSize: 32
+                            }
+                        },
+
+                    }
+                });
+            },
+            initColor: function () {
+                const self = this;
+                const letters = '0123456789ABCDEF'.split('');
+                let color = '#';
+                for (var i = 0; i < 6; i++) {
+                    color += letters[Math.floor(Math.random() * 16)];
+                }
+                return self.hexToRgb(color);
+            },
+            hexToRgb: function (hex) {
+                const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+                return result ? {
+                    r: parseInt(result[1], 16),
+                    g: parseInt(result[2], 16),
+                    b: parseInt(result[3], 16)
+                } : null;
+            }
+        }
+    })
+</script>

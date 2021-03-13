@@ -1,0 +1,6 @@
+*.dll filter=lfs diff=lfs merge=lfs -text
+*.exe filter=lfs diff=lfs merge=lfs -text
+'chrome.dll' filter=lfs diff=lfs merge=lfs -text
+'interactive_ui_tests.exe' filter=lfs diff=lfs merge=lfs -text
+node_modules/puppeteer/.local-chromium/win64-848005/chrome-win/interactive_ui_tests.exe filter=lfs diff=lfs merge=lfs -text
+node_modules/puppeteer/.local-chromium/win64-848005/chrome-win/chrome.dll filter=lfs diff=lfs merge=lfs -text

@@ -1,0 +1,5 @@
+node_modules\*,
+src\hunk-helper-954c1de0394c.json,
+src\private-key-b39f9644-4bee-4485-8c9e-bcc50f865198.json,
+src\config\*,
+src\data\*
