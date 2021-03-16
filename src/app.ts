@@ -59,7 +59,7 @@ async function startServer() {
     app.get('/getWorkoutId', (req, res) => {
         const service = new WgerService();
         service.getScheduleIsStartOrIsEnd().then(rep => {
-            !rep.isEnd ? (rep.isStart ? res.end(JSON.stringify(rep.WorkoutId))
+            !rep.isEnd ? (rep.isStart ? res.end(JSON.stringify(rep))
                 : res.end(false))
                 : res.end(false);
         })
