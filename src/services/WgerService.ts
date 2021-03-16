@@ -52,67 +52,69 @@ export default class WgerService implements IService {
     }
 
     async getAllWorkout(userId: string, id: number, date: string, replyMessage = true): Promise<WgerTodayTrainingMenu> {
-        return getWorkoutAll(id).then(rep => {
-            const r = rep.data as WgerWorkoutAllData;
-            let week = new Date(date).getDay();
-            let workoutItems: WorkoutItem[] = [];
-            let wger: WgerTodayTrainingMenu = {
-                date: date,
-                id: 0,
-                workoutName: "",
-                week: "",
-                items: workoutItems
-            };
+        return new Promise((res, rej) => {
+            getWorkoutAll(id).then(rep => {
+                const r = rep.data as WgerWorkoutAllData;
+                let week = new Date(date).getDay();
+                let workoutItems: WorkoutItem[] = [];
+                let wger: WgerTodayTrainingMenu = {
+                    date: date,
+                    id: 0,
+                    workoutName: "",
+                    week: "",
+                    items: workoutItems
+                };
 
-            if (week === 0) { week = 7; }
+                if (week === 0) { week = 7; }
 
-            r.day_list.forEach(dl => {
-                if (dl.obj.day.some(s => s == week)) {
-                    wger.id = dl.obj.id;
-                    wger.workoutName = dl.obj.description;
-                    wger.week = weeks[week - 1];
+                r.day_list.forEach(dl => {
+                    if (dl.obj.day.some(s => s == week)) {
+                        wger.id = dl.obj.id;
+                        wger.workoutName = dl.obj.description;
+                        wger.week = weeks[week - 1];
 
-                    dl.set_list.forEach(set => {
-                        let sls: ItemSettingList[] = [];
+                        dl.set_list.forEach(set => {
+                            let sls: ItemSettingList[] = [];
 
-                        set.exercise_list.forEach(s => {
-                            sls.push({
-                                set_name: "",
-                                setting_list: s.setting_list,
-                                setting_text: s.setting_text
+                            set.exercise_list.forEach(s => {
+                                sls.push({
+                                    set_name: "",
+                                    setting_list: s.setting_list,
+                                    setting_text: s.setting_text
+                                });
+                            });
+
+                            set.obj.exercises.forEach(e => {
+                                sls[set.obj.exercises.indexOf(e)].set_name = map[e];
+                            });
+
+                            workoutItems.push({
+                                id: set.obj.id,
+                                set_id: set.obj.exerciseday,
+                                exercise_ids: set.obj.exercises,
+                                item_setting_list: sls,
+                                is_super_set: set.is_superset,
+                                done: false
                             });
                         });
 
-                        set.obj.exercises.forEach(e => {
-                            sls[set.obj.exercises.indexOf(e)].set_name = map[e];
-                        });
+                        wger.items = workoutItems;
 
-                        workoutItems.push({
-                            id: set.obj.id,
-                            set_id: set.obj.exerciseday,
-                            exercise_ids: set.obj.exercises,
-                            item_setting_list: sls,
-                            is_super_set: set.is_superset,
-                            done: false
-                        });
-                    });
+                        if (replyMessage) {
+                            this.replaceTemplate(wger).then(msg => {
+                                this.sendTrainMenu(msg);
+                                this.save({ id: userId, date: date, value: wger });
+                            });
+                        }
 
-                    wger.items = workoutItems;
-
-                    if (replyMessage) {
-                        this.replaceTemplate(wger).then(msg => {
-                            this.sendTrainMenu(msg);
-                            this.save({ id: userId, date: date, value: wger });
-                        });
+                        return res(wger);
                     }
-
-                    return new Promise((res, rej) => res(wger));
-                }
+                });
+            }).catch(err => {
+                console.log(err);
+                return res(null);
             });
-        }).catch(err => {
-            console.log(err);
-            return null;
-        });
+        })
     }
 
     updateCurrentWeight(date: string, weight: number): Promise<TextMessage> {
