@@ -129,19 +129,13 @@
                     liff.login().then(r => {
                         liff.getProfile().then(p => {
                             self.profile = p;
-                            self.getWgerId().then(() => {
-                                self.date = new Date().toLocaleDateString("en-US", { timeZone: "Asia/Shanghai" });
-                                self.getAllWorkout();
-                            });
+                            self.getStart();
                         });
                     });
                 } else {
                     liff.getProfile().then(p => {
                         self.profile = p;
-                        self.getWgerId().then(() => {
-                            self.date = new Date().toLocaleDateString("en-US", { timeZone: "Asia/Shanghai" });
-                            self.getAllWorkout();
-                        });
+                        self.getStart();
                     });
                 }
             }).catch((err) => {
@@ -149,6 +143,13 @@
             });
         },
         methods: {
+            getStart: function () {
+                const self = this;
+                self.getWgerId().then(() => {
+                    self.date = new Date().toLocaleDateString("en-US", { timeZone: "Asia/Shanghai" });
+                    self.getAllWorkout();
+                });
+            },
             getWgerId: async function () {
                 const self = this;
                 axios.get('https://hunk-helper.herokuapp.com/getScheduleId').then(res => {
@@ -159,7 +160,7 @@
                 })
             },
             getAllWorkout: function () {
-                axios.get('https://hunk-helper.herokuapp.com/getAllWorkout', { params: {userId: self.profile['userId'], id: self.id, date: self.date } }).then(res => {
+                axios.get('https://hunk-helper.herokuapp.com/getAllWorkout', { params: { userId: self.profile['userId'], id: self.id, date: self.date } }).then(res => {
                     self.workouts = res.data;
                     console.log(self.workouts);
                 }).catch(e => {
