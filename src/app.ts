@@ -50,6 +50,24 @@ async function startServer() {
         });
     });
 
+    app.get('/getScheduleId', (req, res) => {
+        const service = new WgerService();
+        service.getScheduleId().then(id => {
+            res.end(JSON.stringify(id));
+        });
+    });
+
+    app.get('/getAllWorkout', (req, res) => {
+        const service = new WgerService();
+        service.getAllWorkout(req.query.userId ,req.query.id, req.query.date, false).then(wger => {
+            if (wger !== null) {
+                res.end(JSON.stringify(wger))
+            } else {
+                res.end(false);
+            }
+        });
+    });
+
     let server = app.listen(config.port, () => {
         console.log("App now running on port", server.address().port);
     });

@@ -20,9 +20,7 @@ class Linebot {
             case 'message':
                 switch (event.message.type) {
                     case 'text':
-                        this.messageTextToService(event.message.text).then(msg => {
-                            this.client.replyMessage(event.replyToken, msg);
-                        });
+                        this.messageTextToService(event.message.text).then(msg => this.client.replyMessage(event.replyToken, msg));
                         break;
                     case 'image':
                         //TODO
@@ -56,30 +54,23 @@ class Linebot {
             });
             switch (type) {
                 case 1:
-                    new TMDBApiService_1.default().searchMovie(msg.replace(keyWords[0], "")).then(msg => {
-                        res(msg);
-                    });
+                    new TMDBApiService_1.default().searchMovie(msg.replace(keyWords[0], "")).then(msg => res(msg));
                     break;
                 case 2:
                     let todays = new Date().toLocaleDateString("en-US", { timeZone: "Asia/Shanghai" })
                         .split("/");
-                    new WgerService_1.default().updateCurrentWeight(`${todays[2]}-${todays[0]}-${todays[1]}`, Number(msg.replace(keyWords[1], ""))).then(msg => {
-                        res(msg);
-                    });
+                    new WgerService_1.default().updateCurrentWeight(`${todays[2]}-${todays[0]}-${todays[1]}`, Number(msg.replace(keyWords[1], ""))).then(msg => res(msg));
                     break;
                 case 4:
                     let puppteerService = new PuppteerService_1.default();
                     puppteerService.getMyFitnessPalFoodInfo(msg.replace(keyWords[3], "")).then(d => {
-                        puppteerService.replaceTemplate(d).then(msg => {
-                            res(msg);
-                            //this.pushFlexMessage(config.line_bot.pushMessageUserId, msg);
-                        });
+                        puppteerService.replaceTemplate(d).then(msg => res(msg));
                     });
                     break;
                 default:
                     res({
-                        "type": "text",
-                        "text": msg
+                        type: "text",
+                        text: msg
                     });
             }
         });

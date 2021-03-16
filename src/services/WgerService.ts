@@ -9,6 +9,15 @@ import { IService } from '../interfaces/IService';
 import db from '../loaders/firebase';
 
 export default class WgerService implements IService {
+    getScheduleId(): Promise<number> {
+        return new Promise((res, rej) => {
+            getSchedule().then(resp => {
+                let f = (resp.data as WgerSchedule).results.find(i => i.is_active === true);
+                res(f.id);
+            });
+        })
+    }
+
     getScheduleIsStartOrIsEnd(): Promise<WgerScheduleDate> {
         return new Promise((res, rej) => {
             Promise.all([getSchedule(), getScheduleStep()]).then(vs => {
@@ -42,8 +51,8 @@ export default class WgerService implements IService {
         });
     }
 
-    getAllWorkout(id: number, date: string) {
-        getWorkoutAll(id).then(rep => {
+    async getAllWorkout(userId: string, id: number, date: string, replyMessage = true): Promise<WgerTodayTrainingMenu> {
+        return getWorkoutAll(id).then(rep => {
             const r = rep.data as WgerWorkoutAllData;
             let week = new Date(date).getDay();
             let workoutItems: WorkoutItem[] = [];
@@ -55,7 +64,7 @@ export default class WgerService implements IService {
                 items: workoutItems
             };
 
-            if (week === 0) { week = 7 }
+            if (week === 0) { week = 7; }
 
             r.day_list.forEach(dl => {
                 if (dl.obj.day.some(s => s == week)) {
@@ -71,8 +80,8 @@ export default class WgerService implements IService {
                                 set_name: "",
                                 setting_list: s.setting_list,
                                 setting_text: s.setting_text
-                            })
-                        })
+                            });
+                        });
 
                         set.obj.exercises.forEach(e => {
                             sls[set.obj.exercises.indexOf(e)].set_name = map[e];
@@ -86,18 +95,24 @@ export default class WgerService implements IService {
                             is_super_set: set.is_superset,
                             done: false
                         });
-                    })
+                    });
 
                     wger.items = workoutItems;
-                    this.replaceTemplate(wger).then(msg => {
-                        this.sendTrainMenu(msg);
-                        this.save({ id: config.line_bot.pushMessageUserId, date: date, value: wger });
-                    });
+
+                    if (replyMessage) {
+                        this.replaceTemplate(wger).then(msg => {
+                            this.sendTrainMenu(msg);
+                            this.save({ id: userId, date: date, value: wger });
+                        });
+                    }
+
+                    return new Promise((res, rej) => res(wger));
                 }
-            })
+            });
         }).catch(err => {
             console.log(err);
-        })
+            return null;
+        });
     }
 
     updateCurrentWeight(date: string, weight: number): Promise<TextMessage> {
@@ -153,7 +168,7 @@ export default class WgerService implements IService {
     }
 
     save(input: { id: string, date: string, value: unknown }) {
-        db.collection('user').doc(input.id).doc(input.date).set(input.value as WgerTodayTrainingMenu).then(() => {
+        db.collection('user').doc(input.id).collection(input.date).doc('train record').set(input.value as WgerTodayTrainingMenu).then(() => {
             console.log('set data successful');
         });
     }

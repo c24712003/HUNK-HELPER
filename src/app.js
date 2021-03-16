@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const config_1 = require("./config");
 const linebot_1 = require("./loaders/linebot");
 const ScheduleList_1 = require("./schedules/ScheduleList");
+const WgerService_1 = require("./services/WgerService");
 const PuppteerService_1 = require("./services/PuppteerService");
 const express = require('express');
 const app = express();
@@ -23,17 +24,14 @@ function startServer() {
                 yield linebot_1.default.handleEvent(req.body.events[0]);
                 res.json(res);
             }
-            catch (err) {
-            }
+            catch (err) { }
         }));
         app.get('/nurtation.html', (req, res) => {
             res.sendFile(__dirname + '/views/nurtation.html');
         });
         app.get('/getFoodInfo', (req, res) => {
             const service = new PuppteerService_1.default();
-            service.getMyFitnessPalFoodInfo(req.query.food).then(data => {
-                res.end(JSON.stringify(data));
-            });
+            service.getMyFitnessPalFoodInfo(req.query.food).then(data => res.end(JSON.stringify(data)));
         });
         app.get('/recordDietary', (req, res) => {
             const service = new PuppteerService_1.default();
@@ -55,6 +53,23 @@ function startServer() {
                         linebot_1.default.pushFlexMessage(req.query.userId, fm);
                         res.end(JSON.stringify(true));
                     });
+                }
+            });
+        });
+        app.get('/getScheduleId', (req, res) => {
+            const service = new WgerService_1.default();
+            service.getScheduleId().then(id => {
+                res.end(JSON.stringify(id));
+            });
+        });
+        app.get('/getAllWorkout', (req, res) => {
+            const service = new WgerService_1.default();
+            service.getAllWorkout(req.query.userId, req.query.id, req.query.date, false).then(wger => {
+                if (wger !== null) {
+                    res.end(JSON.stringify(wger));
+                }
+                else {
+                    res.end(false);
                 }
             });
         });

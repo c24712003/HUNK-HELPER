@@ -1,4 +1,13 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const config_1 = require("../config");
 const axios_1 = require("../http/axios");
@@ -7,6 +16,14 @@ const LineMessage_1 = require("../models/LineMessage");
 const TRAINMENU_1 = require("../template/wger/TRAINMENU");
 const firebase_1 = require("../loaders/firebase");
 class WgerService {
+    getScheduleId() {
+        return new Promise((res, rej) => {
+            axios_1.getSchedule().then(resp => {
+                let f = resp.data.results.find(i => i.is_active === true);
+                res(f.id);
+            });
+        });
+    }
     getScheduleIsStartOrIsEnd() {
         return new Promise((res, rej) => {
             Promise.all([axios_1.getSchedule(), axios_1.getScheduleStep()]).then(vs => {
@@ -39,56 +56,62 @@ class WgerService {
             });
         });
     }
-    getAllWorkout(id, date) {
-        axios_1.getWorkoutAll(id).then(rep => {
-            let r = rep.data;
-            let week = new Date(date).getDay();
-            let workoutItems = [];
-            let wger = {
-                date: date,
-                id: 0,
-                workoutName: "",
-                week: "",
-                items: workoutItems
-            };
-            if (week === 0) {
-                week = 7;
-            }
-            r.day_list.forEach(dl => {
-                if (dl.obj.day.some(s => s == week)) {
-                    wger.id = dl.obj.id;
-                    wger.workoutName = dl.obj.description;
-                    wger.week = weeks[week - 1];
-                    dl.set_list.forEach(set => {
-                        let sls = [];
-                        set.exercise_list.forEach(s => {
-                            sls.push({
-                                set_name: "",
-                                setting_list: s.setting_list,
-                                setting_text: s.setting_text
+    getAllWorkout(userId, id, date, replyMessage = true) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return axios_1.getWorkoutAll(id).then(rep => {
+                const r = rep.data;
+                let week = new Date(date).getDay();
+                let workoutItems = [];
+                let wger = {
+                    date: date,
+                    id: 0,
+                    workoutName: "",
+                    week: "",
+                    items: workoutItems
+                };
+                if (week === 0) {
+                    week = 7;
+                }
+                r.day_list.forEach(dl => {
+                    if (dl.obj.day.some(s => s == week)) {
+                        wger.id = dl.obj.id;
+                        wger.workoutName = dl.obj.description;
+                        wger.week = weeks[week - 1];
+                        dl.set_list.forEach(set => {
+                            let sls = [];
+                            set.exercise_list.forEach(s => {
+                                sls.push({
+                                    set_name: "",
+                                    setting_list: s.setting_list,
+                                    setting_text: s.setting_text
+                                });
+                            });
+                            set.obj.exercises.forEach(e => {
+                                sls[set.obj.exercises.indexOf(e)].set_name = map[e];
+                            });
+                            workoutItems.push({
+                                id: set.obj.id,
+                                set_id: set.obj.exerciseday,
+                                exercise_ids: set.obj.exercises,
+                                item_setting_list: sls,
+                                is_super_set: set.is_superset,
+                                done: false
                             });
                         });
-                        set.obj.exercises.forEach(e => {
-                            sls[set.obj.exercises.indexOf(e)].set_name = map[e];
-                        });
-                        workoutItems.push({
-                            id: set.obj.id,
-                            set_id: set.obj.exerciseday,
-                            exercise_ids: set.obj.exercises,
-                            item_setting_list: sls,
-                            is_super_set: set.is_superset,
-                            done: false
-                        });
-                    });
-                    wger.items = workoutItems;
-                    this.replaceTemplate(wger).then(msg => {
-                        this.sendTrainMenu(msg);
-                        this.save(config_1.default.line_bot.pushMessageUserId, date, wger);
-                    });
-                }
+                        wger.items = workoutItems;
+                        if (replyMessage) {
+                            this.replaceTemplate(wger).then(msg => {
+                                this.sendTrainMenu(msg);
+                                this.save({ id: userId, date: date, value: wger });
+                            });
+                        }
+                        return new Promise((res, rej) => res(wger));
+                    }
+                });
+            }).catch(err => {
+                console.log(err);
+                return null;
             });
-        }).catch(err => {
-            console.log(err);
         });
     }
     updateCurrentWeight(date, weight) {
@@ -136,6 +159,11 @@ class WgerService {
             res(result);
         });
     }
+    save(input) {
+        firebase_1.default.collection('user').doc(input.id).collection(input.date).doc('train record').set(input.value).then(() => {
+            console.log('set data successful');
+        });
+    }
     getEndDate(date, days) {
         let d = new Date(date);
         d.setDate(d.getDate() + (days * 7));
@@ -148,11 +176,6 @@ class WgerService {
         else {
             console.log('msg is empty !!');
         }
-    }
-    save(id, date, value) {
-        firebase_1.default.collection('user').doc(id).doc(date).set(value).then(() => {
-            console.log('set data successful');
-        });
     }
 }
 exports.default = WgerService;

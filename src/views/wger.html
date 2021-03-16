@@ -2,28 +2,72 @@
 
 <head>
     <style>
+        html {
+            background: lightgray;
+        }
+
         #app {
             width: 100%;
+            margin: 25% auto;
+        }
+
+        .list-section {
             margin: 0 auto;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 2%;
+        }
+
+        .item {
+            margin: 2% 0;
+            width: 90%;
+            text-align: start;
+            position: relative;
+        }
+
+        input[type=checkbox] {
+            /* Double-sized Checkboxes */
+            -ms-transform: scale(5);
+            /* IE */
+            -moz-transform: scale(5);
+            /* FF */
+            -webkit-transform: scale(5);
+            /* Safari and Chrome */
+            -o-transform: scale(5);
+            /* Opera */
+            transform: scale(5);
+            position: absolute;
+            top: 47%;
+        }
+
+        /* Might want to wrap a span around your checkbox text */
+        .checkboxtext {
+            /* Checkbox text */
+            font-size: 50pt;
+            display: inline;
+            margin-left: 10%;
         }
 
         .progress-section {
             display: flex;
             flex-direction: column;
-            margin: 0 auto;
-            width: 60%;
+            margin: 10% auto;
+            width: 90%;
             text-align: center;
         }
 
         .progress-section label {
             font-size: 30pt;
-            text-align: center;
+            text-align: start;
             width: 68%;
+            font-weight: bold;
         }
 
         progress {
             margin: 0 auto;
-            width: 60%;
+            width: 100%;
             height: 3em;
         }
     </style>
@@ -31,8 +75,28 @@
 
 <body role="main">
     <div id="app">
+        <div class="list-section">
+            <div class="item">
+                <input type="checkbox" name="optiona" id="opta" checked />
+                <span class="checkboxtext">
+                    Option A
+                </span>
+            </div>
+            <div class="item">
+                <input type="checkbox" name="optionb" id="optb" />
+                <span class="checkboxtext">
+                    Option B
+                </span>
+            </div>
+            <div class="item">
+                <input type="checkbox" name="optionc" id="optc" />
+                <span class="checkboxtext">
+                    Option C
+                </span>
+            </div>
+        </div>
         <div class="progress-section">
-            <label for="file">Progress</label>
+            <label for="file">完成度</label>
             <progress id="file" max="100" value="70"></progress>
         </div>
     </div>
@@ -51,28 +115,56 @@
     let app = new Vue({
         el: '#app',
         data: {
-            profile: null
+            profile: null,
+            id: 0,
+            date: "",
+            workouts: null
         },
-        mounted: (() => {
+        mounted: function () {
             const self = this;
-            // liff.init({
-            //     liffId: '1655708537-8xKnrzvx'
-            // }).then(() => {
-            //     if (!liff.isLoggedIn()) {
-            //         liff.login().then(r => {
-            //             liff.getProfile().then(p => {
-            //                 self.profile = p;
-            //             });
-            //         });
-            //     } else {
-            //         liff.getProfile().then(p => {
-            //             self.profile = p;
-            //         });
-            //     }
-            // }).catch((err) => {
-            //     console.log('初始化失敗')
-            // });
-        }),
-        methods: {}
+            liff.init({
+                liffId: '1655708537-8xKnrzvx'
+            }).then(() => {
+                if (!liff.isLoggedIn()) {
+                    liff.login().then(r => {
+                        liff.getProfile().then(p => {
+                            self.profile = p;
+                            self.getWgerId().then(() => {
+                                self.date = new Date().toLocaleDateString("en-US", { timeZone: "Asia/Shanghai" });
+                                self.getAllWorkout();
+                            });
+                        });
+                    });
+                } else {
+                    liff.getProfile().then(p => {
+                        self.profile = p;
+                        self.getWgerId().then(() => {
+                            self.date = new Date().toLocaleDateString("en-US", { timeZone: "Asia/Shanghai" });
+                            self.getAllWorkout();
+                        });
+                    });
+                }
+            }).catch((err) => {
+                console.log('初始化失敗')
+            });
+        },
+        methods: {
+            getWgerId: async function () {
+                const self = this;
+                axios.get('https://hunk-helper.herokuapp.com/getScheduleId').then(res => {
+                    self.id = res.data['id'];
+                }).catch(e => {
+                    console.log(e);
+                })
+            },
+            getAllWorkout: function () {
+                axios.get('https://hunk-helper.herokuapp.com/getAllWorkout', { params: {userId: self.profile['userId'], id: self.id, date: self.date } }).then(res => {
+                    self.workouts = res.data;
+                    console.log(self.workouts);
+                }).catch(e => {
+                    console.log(e);
+                });
+            }
+        }
     })
 </script>

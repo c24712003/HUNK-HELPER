@@ -3,7 +3,6 @@ import { Client, FlexMessage, Message, middleware, TextMessage } from '@line/bot
 import TMDBApiService from '../services/TMDBApiService';
 import WgerService from '../services/WgerService';
 import PuppteerService from '../services/PuppteerService';
-import { LineFlexBubbleMessage, LineFlexMessage } from '../models/LineMessage';
 
 const keyWords = ['找電影', '體重', '體重表', '食物'];
 const lineConfig = {
@@ -28,7 +27,10 @@ export default class Linebot {
                         break;
                     case 'image':
                         //TODO
-                        this.client.getMessageContent(event.message.id).then(stream => stream.on('data', (chunk) => { }));
+                        this.client.getMessageContent(event.message.id).then(stream => {
+                            stream.on('data', (chunk) => {
+                            })
+                        });
                         break;
                     case 'sticker':
                         break;
