@@ -127,6 +127,7 @@
             }).then(() => {
                 if (!liff.isLoggedIn()) {
                     liff.login().then(r => {
+                        
                         liff.getProfile().then(p => {
                             self.profile = p;
                             self.getStart();
