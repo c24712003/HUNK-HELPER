@@ -153,6 +153,7 @@
                 const self = this;
                 axios.get('https://hunk-helper.herokuapp.com/getScheduleId').then(res => {
                     self.id = res.data['id'];
+                    console.log(res);
                 }).catch(e => {
                     console.log(e);
                 })
