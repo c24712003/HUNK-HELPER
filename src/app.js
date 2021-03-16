@@ -29,6 +29,9 @@ function startServer() {
         app.get('/nurtation.html', (req, res) => {
             res.sendFile(__dirname + '/views/nurtation.html');
         });
+        app.get('/wger.html', (req, res) => {
+            res.sendFile(__dirname + '/views/wger.html');
+        });
         app.get('/getFoodInfo', (req, res) => {
             const service = new PuppteerService_1.default();
             service.getMyFitnessPalFoodInfo(req.query.food).then(data => res.end(JSON.stringify(data)));
