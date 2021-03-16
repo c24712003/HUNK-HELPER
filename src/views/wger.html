@@ -127,7 +127,6 @@
             }).then(() => {
                 if (!liff.isLoggedIn()) {
                     liff.login().then(r => {
-                        
                         liff.getProfile().then(p => {
                             self.profile = p;
                             self.getStart();
@@ -161,6 +160,7 @@
                 })
             },
             getAllWorkout: function () {
+                const self = this;
                 axios.get('https://hunk-helper.herokuapp.com/getAllWorkout', { params: { userId: self.profile['userId'], id: self.id, date: self.date } }).then(res => {
                     self.workouts = res.data;
                     console.log(self.workouts);
