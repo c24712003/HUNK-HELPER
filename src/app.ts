@@ -22,12 +22,13 @@ async function startServer() {
     });
 
     app.get('/wger.html', (req, res) => {
+        console.log("");
         res.sendFile(__dirname + '/views/wger.html');
     });
 
     app.get('/getFoodInfo', (req, res) => {
         const service = new PuppteerService();
-        
+
         service.getMyFitnessPalFoodInfo(req.query.food).then(data => res.end(JSON.stringify(data)));
     });
 

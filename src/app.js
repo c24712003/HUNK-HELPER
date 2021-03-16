@@ -30,6 +30,7 @@ function startServer() {
             res.sendFile(__dirname + '/views/nurtation.html');
         });
         app.get('/wger.html', (req, res) => {
+            console.log("");
             res.sendFile(__dirname + '/views/wger.html');
         });
         app.get('/getFoodInfo', (req, res) => {
