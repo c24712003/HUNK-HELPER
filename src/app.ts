@@ -66,6 +66,7 @@ async function startServer() {
     app.get('/getAllWorkout', (req, res) => {
         const service = new WgerService();
         service.getAllWorkout(req.query.userId ,req.query.id, req.query.date, false).then(wger => {
+            console.log(wger);
             if (wger !== null) {
                 res.end(JSON.stringify(wger))
             } else {
