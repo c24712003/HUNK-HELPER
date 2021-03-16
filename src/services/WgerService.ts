@@ -52,9 +52,6 @@ export default class WgerService implements IService {
     }
 
     async getAllWorkout(userId: string, id: number, date: string, replyMessage = true): Promise<WgerTodayTrainingMenu> {
-        console.log(id);
-        console.log(date);
-
         return getWorkoutAll(id).then(rep => {
             const r = rep.data as WgerWorkoutAllData;
             let week = new Date(date).getDay();
