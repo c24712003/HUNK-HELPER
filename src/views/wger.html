@@ -146,6 +146,7 @@
             getWgerId: function () {
                 const self = this;
                 axios.get('https://hunk-helper.herokuapp.com/getWorkoutId').then(res => {
+                    console.log(res.data);
                     self.id = res.data['WorkoutId'];
                     self.date = res.data['Date'];
                     self.getAllWorkout();
