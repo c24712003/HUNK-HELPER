@@ -27,6 +27,7 @@ async function startServer() {
 
     app.get('/getFoodInfo', (req, res) => {
         const service = new PuppteerService();
+        
         service.getMyFitnessPalFoodInfo(req.query.food).then(data => res.end(JSON.stringify(data)));
     });
 
