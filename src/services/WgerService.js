@@ -58,59 +58,61 @@ class WgerService {
     }
     getAllWorkout(userId, id, date, replyMessage = true) {
         return __awaiter(this, void 0, void 0, function* () {
-            return axios_1.getWorkoutAll(id).then(rep => {
-                const r = rep.data;
-                let week = new Date(date).getDay();
-                let workoutItems = [];
-                let wger = {
-                    date: date,
-                    id: 0,
-                    workoutName: "",
-                    week: "",
-                    items: workoutItems
-                };
-                if (week === 0) {
-                    week = 7;
-                }
-                r.day_list.forEach(dl => {
-                    if (dl.obj.day.some(s => s == week)) {
-                        wger.id = dl.obj.id;
-                        wger.workoutName = dl.obj.description;
-                        wger.week = weeks[week - 1];
-                        dl.set_list.forEach(set => {
-                            let sls = [];
-                            set.exercise_list.forEach(s => {
-                                sls.push({
-                                    set_name: "",
-                                    setting_list: s.setting_list,
-                                    setting_text: s.setting_text
+            return new Promise((res, rej) => {
+                axios_1.getWorkoutAll(id).then(rep => {
+                    const r = rep.data;
+                    let week = new Date(date).getDay();
+                    let workoutItems = [];
+                    let wger = {
+                        date: date,
+                        id: 0,
+                        workoutName: "",
+                        week: "",
+                        items: workoutItems
+                    };
+                    if (week === 0) {
+                        week = 7;
+                    }
+                    r.day_list.forEach(dl => {
+                        if (dl.obj.day.some(s => s == week)) {
+                            wger.id = dl.obj.id;
+                            wger.workoutName = dl.obj.description;
+                            wger.week = weeks[week - 1];
+                            dl.set_list.forEach(set => {
+                                let sls = [];
+                                set.exercise_list.forEach(s => {
+                                    sls.push({
+                                        set_name: "",
+                                        setting_list: s.setting_list,
+                                        setting_text: s.setting_text
+                                    });
+                                });
+                                set.obj.exercises.forEach(e => {
+                                    sls[set.obj.exercises.indexOf(e)].set_name = map[e];
+                                });
+                                workoutItems.push({
+                                    id: set.obj.id,
+                                    set_id: set.obj.exerciseday,
+                                    exercise_ids: set.obj.exercises,
+                                    item_setting_list: sls,
+                                    is_super_set: set.is_superset,
+                                    done: false
                                 });
                             });
-                            set.obj.exercises.forEach(e => {
-                                sls[set.obj.exercises.indexOf(e)].set_name = map[e];
-                            });
-                            workoutItems.push({
-                                id: set.obj.id,
-                                set_id: set.obj.exerciseday,
-                                exercise_ids: set.obj.exercises,
-                                item_setting_list: sls,
-                                is_super_set: set.is_superset,
-                                done: false
-                            });
-                        });
-                        wger.items = workoutItems;
-                        if (replyMessage) {
-                            this.replaceTemplate(wger).then(msg => {
-                                this.sendTrainMenu(msg);
-                                this.save({ id: userId, date: date, value: wger });
-                            });
+                            wger.items = workoutItems;
+                            if (replyMessage) {
+                                this.replaceTemplate(wger).then(msg => {
+                                    this.sendTrainMenu(msg);
+                                    this.save({ id: userId, date: date, value: wger });
+                                });
+                            }
+                            return res(wger);
                         }
-                        return new Promise((res, rej) => res(wger));
-                    }
+                    });
+                }).catch(err => {
+                    console.log(err);
+                    return res(null);
                 });
-            }).catch(err => {
-                console.log(err);
-                return null;
             });
         });
     }
@@ -160,7 +162,8 @@ class WgerService {
         });
     }
     save(input) {
-        firebase_1.default.collection('user').doc(input.id).collection(input.date).doc('train record').set(input.value).then(() => {
+        let v = input.value;
+        firebase_1.default.collection('user').doc(input.id).collection(v.date.replace("/", "-")).doc('train record').set(input.value).then(() => {
             console.log('set data successful');
         });
     }

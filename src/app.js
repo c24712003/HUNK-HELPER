@@ -60,15 +60,18 @@ function startServer() {
                 }
             });
         });
-        app.get('/getScheduleId', (req, res) => {
+        app.get('/getWorkoutId', (req, res) => {
             const service = new WgerService_1.default();
-            service.getScheduleId().then(id => {
-                res.end(JSON.stringify(id));
+            service.getScheduleIsStartOrIsEnd().then(rep => {
+                !rep.isEnd ? (rep.isStart ? res.end(JSON.stringify(rep))
+                    : res.end(false))
+                    : res.end(false);
             });
         });
         app.get('/getAllWorkout', (req, res) => {
             const service = new WgerService_1.default();
             service.getAllWorkout(req.query.userId, req.query.id, req.query.date, false).then(wger => {
+                console.log(wger);
                 if (wger !== null) {
                     res.end(JSON.stringify(wger));
                 }

@@ -170,7 +170,8 @@ export default class WgerService implements IService {
     }
 
     save(input: { id: string, date: string, value: unknown }) {
-        db.collection('user').doc(input.id).collection(input.date).doc('train record').set(input.value as WgerTodayTrainingMenu).then(() => {
+        let v = input.value as WgerTodayTrainingMenu;
+        db.collection('user').doc(input.id).collection(v.date.replace("/", "-")).doc('train record').set(input.value as WgerTodayTrainingMenu).then(() => {
             console.log('set data successful');
         });
     }
