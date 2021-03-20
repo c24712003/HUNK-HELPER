@@ -162,11 +162,7 @@ class WgerService {
         });
     }
     save(input) {
-        let v = input.value;
-        console.log(v.date);
-        console.log(v.date.replace("/", "-"));
-        console.log(input.date);
-        firebase_1.default.collection('user').doc(input.id).collection(input.date.replace("/", "-")).doc('train record').set(input.value).then(() => {
+        firebase_1.default.collection('user').doc(input.id).collection(input.date.split('/').join('-')).doc('train record').set(input.value).then(() => {
             console.log('set data successful');
         });
     }
