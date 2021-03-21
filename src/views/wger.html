@@ -260,6 +260,8 @@
 
                         self.lastChecked = cb;
                         self.workouts['items'].forEach(w => {
+                                        console.log(w.id);
+                                        console.log(e.toElement.id);
                                         if (w.id === e.toElement.id) {
                                             w.done = true;
                                         }
