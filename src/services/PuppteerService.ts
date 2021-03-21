@@ -11,7 +11,6 @@ const URL = 'https://www.myfitnesspal.com'
 export default class PuppteerService implements IService {
     getDateDietaryRecord(userId: string, date: string): Promise<Nurtrition> {
         const query = db.collection('nutrition').doc(userId).collection(date);
-        console.log('');
         return new Promise((res, rej) => {
             query.get().then(docs => {
                 if (docs.size === 0) {

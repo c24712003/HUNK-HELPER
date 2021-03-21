@@ -56,6 +56,19 @@ class WgerService {
             });
         });
     }
+    getExistWorkout(userId, date) {
+        const query = firebase_1.default.collection('user').doc(userId).collection(date.split('/').join('-'));
+        return new Promise((res, rej) => {
+            query.get().then(docs => {
+                if (docs.size === 0) {
+                    res(null);
+                }
+                else {
+                    docs.forEach(doc => res(doc.data()));
+                }
+            });
+        });
+    }
     getAllWorkout(userId, id, date, replyMessage = true) {
         return __awaiter(this, void 0, void 0, function* () {
             return new Promise((res, rej) => {

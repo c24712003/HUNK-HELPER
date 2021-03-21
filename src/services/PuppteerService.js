@@ -18,7 +18,6 @@ const URL = 'https://www.myfitnesspal.com';
 class PuppteerService {
     getDateDietaryRecord(userId, date) {
         const query = firebase_1.default.collection('nutrition').doc(userId).collection(date);
-        console.log('');
         return new Promise((res, rej) => {
             query.get().then(docs => {
                 if (docs.size === 0) {

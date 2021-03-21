@@ -27,6 +27,10 @@
             position: relative;
         }
 
+        .item>div {
+            display: flex;
+        }
+
         input[type=checkbox] {
             /* Double-sized Checkboxes */
             -ms-transform: scale(5);
@@ -50,6 +54,18 @@
             margin-left: 10%;
         }
 
+        .list-section li input[type=checkbox]:checked+span,
+        li input[type=checkbox]:checked+div span {
+            text-decoration: line-through;
+            color: #aaa;
+        }
+
+        .list-section li span {
+            display: inline-block;
+            margin-left: 12px;
+            color: #555;
+        }
+
         .progress-section {
             display: flex;
             flex-direction: column;
@@ -70,34 +86,46 @@
             width: 100%;
             height: 3em;
         }
+
+        .check-all {
+            text-align: center;
+            margin: 25px 0;
+        }
+
+        .check-all a {
+            color: #fff;
+            font-weight: bold;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: color 200ms ease;
+        }
+
+        .check-all:hover {
+            color: rgba(0, 0, 0, .56);
+        }
     </style>
 </head>
 
 <body role="main">
     <div id="app">
         <div class="list-section">
-            <div class="item">
-                <input type="checkbox" name="optiona" id="opta" checked />
-                <span class="checkboxtext">
-                    Option A
-                </span>
-            </div>
-            <div class="item">
-                <input type="checkbox" name="optionb" id="optb" />
-                <span class="checkboxtext">
-                    Option B
-                </span>
-            </div>
-            <div class="item">
-                <input type="checkbox" name="optionc" id="optc" />
-                <span class="checkboxtext">
-                    Option C
-                </span>
+            <div class="item" v-for="item in workouts.items">
+                <input type="checkbox" name="optiona" id="item.id" :checked="item.done" />
+                <div>
+                    <div v-for="i in item.item_setting_list">
+                        <span class="checkboxtext">
+                            {{i.set_name}} : {{i.setting_text}}
+                        </span>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="progress-section">
             <label for="file">完成度</label>
             <progress id="file" max="100" value="70"></progress>
+        </div>
+        <div class="check-record">
+            <a href="#">紀錄</a>
         </div>
     </div>
 </body>
@@ -118,7 +146,8 @@
             profile: null,
             id: 0,
             date: "",
-            workouts: null
+            workouts: null,
+            lastChecked: null
         },
         mounted: function () {
             const self = this;
@@ -149,19 +178,69 @@
                     console.log(res.data);
                     self.id = res.data['WorkoutId'];
                     self.date = res.data['Date'];
-                    self.getAllWorkout();
+                    self.getTodayWorkout();
                 }).catch(e => {
                     console.log(e);
                 })
             },
-            getAllWorkout: function () {
+            getTodayWorkout: function () {
                 const self = this;
-                axios.get('https://hunk-helper.herokuapp.com/getAllWorkout', { params: { userId: self.profile['userId'], id: self.id, date: self.date } }).then(res => {
+                axios.get('https://hunk-helper.herokuapp.com/getTodayWorkout', { params: { userId: self.profile['userId'], date: self.date } }).then(res => {
                     console.log(res);
                     self.workouts = res.data;
                     console.log(self.workouts);
+                    self.setCheckboxs();
                 }).catch(e => {
                     console.log(e);
+                });
+            },
+            updateTodayWorkout: function () {
+                const self = this;
+                axios.get('https://hunk-helper.herokuapp.com/updateTodayWorkout', { params: { userId: self.profile['userId'], date: self.date, wger: self.workouts } }).then(res => {
+                    console.log('update today workout successful!!');
+                    liff.closeWindow();
+                }).catch(e => {
+                    console.log(e);
+                })
+            },
+            setCheckboxs: function () {
+                const self = this;
+                const checkboxs = document.querySelectorAll('.list-section input[type=checkbox]');
+                checkboxs.forEach(checkbox => {
+                    checkbox.addEventListener('click', (e) => {
+                        const cb = this;
+
+                        if (e.shiftKey && cb.checked) {
+                            let inBetween = false;
+
+                            checkboxes.forEach(checkbox => {
+                                if (checkbox === cb || checkbox === lastChecked) {
+                                    inBetween = !inBetween;
+                                }
+
+                                if (inBetween) {
+                                    checkbox.checked = true;
+                                }
+                            });
+
+                            self.workouts.forEach(w => {
+                                if (w.id === e.id) {
+                                    w.done = false;
+                                }
+                            });
+                        }
+
+                        self.lastChecked = cb;
+                        self.workouts.forEach(w => {
+                            if (w.id === e.id) {
+                                w.done = true;
+                            }
+                        });
+                    })
+                });
+
+                document.querySelector('.check-record').addEventListener('click', (e) => {
+                    self.updateTodayWorkout();
                 });
             }
         }

@@ -68,9 +68,9 @@ function startServer() {
                     : res.end(false);
             });
         });
-        app.get('/getAllWorkout', (req, res) => {
+        app.get('/getTodayWorkout', (req, res) => {
             const service = new WgerService_1.default();
-            service.getAllWorkout(req.query.userId, req.query.id, req.query.date, false).then(wger => {
+            service.getExistWorkout(req.query.userId, req.query.date).then(wger => {
                 console.log(wger);
                 if (wger !== null) {
                     res.end(JSON.stringify(wger));
@@ -79,6 +79,10 @@ function startServer() {
                     res.end(false);
                 }
             });
+        });
+        app.get('/updateTodayWorkout', (req, res) => {
+            const service = new WgerService_1.default();
+            service.save({ id: req.query.userId, date: req.query.date, value: req.query.workouts });
         });
         let server = app.listen(config_1.default.port, () => {
             console.log("App now running on port", server.address().port);

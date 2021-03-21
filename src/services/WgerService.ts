@@ -51,6 +51,19 @@ export default class WgerService implements IService {
         });
     }
 
+    getExistWorkout(userId: string, date: string): Promise<WgerTodayTrainingMenu> {
+        const query = db.collection('user').doc(userId).collection(date.split('/').join('-'));
+        return new Promise((res, rej) => {
+            query.get().then(docs => {
+                if (docs.size === 0) {
+                    res(null);
+                } else {
+                    docs.forEach(doc => res(doc.data() as WgerTodayTrainingMenu));
+                }
+            })
+        });
+    }
+
     async getAllWorkout(userId: string, id: number, date: string, replyMessage = true): Promise<WgerTodayTrainingMenu> {
         return new Promise((res, rej) => {
             getWorkoutAll(id).then(rep => {
