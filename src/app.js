@@ -64,8 +64,8 @@ function startServer() {
             const service = new WgerService_1.default();
             service.getScheduleIsStartOrIsEnd().then(rep => {
                 !rep.isEnd ? (rep.isStart ? res.end(JSON.stringify(rep))
-                    : res.end(false))
-                    : res.end(false);
+                    : res.end(JSON.stringify(false)))
+                    : res.end(JSON.stringify(false));
             });
         });
         app.get('/getTodayWorkout', (req, res) => {
@@ -76,7 +76,7 @@ function startServer() {
                     res.end(JSON.stringify(wger));
                 }
                 else {
-                    res.end(false);
+                    res.end(JSON.stringify(true));
                 }
             });
         });
@@ -86,7 +86,7 @@ function startServer() {
             service.replaceTemplate(data).then(rep => {
                 linebot_1.default.pushFlexMessage(req.query.userId, rep);
                 service.save({ id: req.query.userId, date: req.query.date, value: data });
-                res.end(true);
+                res.end(JSON.stringify(true));
             });
         });
         let server = app.listen(config_1.default.port, () => {

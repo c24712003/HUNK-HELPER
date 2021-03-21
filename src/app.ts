@@ -61,8 +61,8 @@ async function startServer() {
         const service = new WgerService();
         service.getScheduleIsStartOrIsEnd().then(rep => {
             !rep.isEnd ? (rep.isStart ? res.end(JSON.stringify(rep))
-                : res.end(false))
-                : res.end(false);
+                : res.end(JSON.stringify(false)))
+                : res.end(JSON.stringify(false));
         })
     });
 
@@ -73,7 +73,7 @@ async function startServer() {
             if (wger !== null) {
                 res.end(JSON.stringify(wger))
             } else {
-                res.end(false);
+                res.end(JSON.stringify(true));
             }
         });
     });
@@ -84,7 +84,7 @@ async function startServer() {
         service.replaceTemplate(data).then(rep => {
             linebot.pushFlexMessage(req.query.userId, rep);
             service.save({ id: req.query.userId, date: req.query.date, value: data });
-            res.end(true);
+            res.end(JSON.stringify(true));
         });
     });
 

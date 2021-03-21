@@ -210,7 +210,7 @@
                 const self = this;
                 axios.get('https://hunk-helper.herokuapp.com/getTodayWorkout', { params: { userId: self.profile['userId'], date: self.date } }).then(res => {
                     self.workouts = res.data;
-                    setTimeout(() =>{
+                    setTimeout(() => {
                         self.setCheckboxs();
                     }, 500);
                 }).catch(e => {
@@ -221,8 +221,10 @@
                 const self = this;
                 console.log(self.workouts);
                 axios.get('https://hunk-helper.herokuapp.com/updateTodayWorkout', { params: { userId: self.profile['userId'], date: self.date, wger: self.workouts } }).then(res => {
-                    console.log('update today workout successful!!');
-                    liff.closeWindow();
+                    if (res.data === true) {
+                        console.log('update today workout successful!!');
+                        liff.closeWindow();
+                    }
                 }).catch(e => {
                     console.log(e);
                 })
@@ -236,7 +238,7 @@
                         const cb = this;
                         if (cb.checked) {
                             let inBetween = false;
-                            
+
                             checkboxes.forEach(checkbox => {
                                 if (checkbox === cb || checkbox === lastChecked) {
                                     inBetween = !inBetween;
@@ -260,10 +262,10 @@
 
                         self.lastChecked = cb;
                         self.workouts['items'].forEach(w => {
-                                        if (w.id === parseInt(e.toElement.id)) {
-                                            w.done = true;
-                                        }
-                                    });
+                            if (w.id === parseInt(e.toElement.id)) {
+                                w.done = true;
+                            }
+                        });
                     })
                 });
             }
