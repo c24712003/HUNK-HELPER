@@ -219,7 +219,8 @@
             },
             updateTodayWorkout: function () {
                 const self = this;
-                axios.get('https://hunk-helper.herokuapp.com/updateTodayWorkout', { params: { userId: self.profile['userId'], date: self.date, wger: JSON.stringify(self.workouts) } }).then(res => {
+                console.log(self.workouts);
+                axios.get('https://hunk-helper.herokuapp.com/updateTodayWorkout', { params: { userId: self.profile['userId'], date: self.date, wger: self.workouts } }).then(res => {
                     console.log('update today workout successful!!');
                     liff.closeWindow();
                 }).catch(e => {
@@ -234,7 +235,6 @@
                 checkboxs.forEach(checkbox => {
                     checkbox.addEventListener('click', (e) => {
                         const cb = this;
-                        console.log(e.id);
 
                         if (e.shiftKey && cb.checked) {
                             let inBetween = false;
@@ -243,7 +243,7 @@
                                 if (checkbox === cb || checkbox === lastChecked) {
                                     inBetween = !inBetween;
                                     self.workouts.forEach(w => {
-                                        if (w.id === e.id) {
+                                        if (w.id === cb.id) {
                                             w.done = false;
                                         }
                                     });
@@ -252,7 +252,7 @@
                                 if (inBetween) {
                                     checkbox.checked = true;
                                     self.workouts.forEach(w => {
-                                        if (w.id === e.id) {
+                                        if (w.id === cb.id) {
                                             w.done = true;
                                         }
                                     });
