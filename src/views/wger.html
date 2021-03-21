@@ -229,6 +229,8 @@
             setCheckboxs: function () {
                 const self = this;
                 const checkboxs = document.querySelectorAll('.list-section input[type=checkbox]');
+                console.log(checkboxs);
+
                 checkboxs.forEach(checkbox => {
                     checkbox.addEventListener('click', (e) => {
                         const cb = this;
