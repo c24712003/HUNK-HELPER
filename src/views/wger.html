@@ -263,7 +263,7 @@
                         self.lastChecked = cb;
                         self.workouts['items'].forEach(w => {
                             if (w.id === parseInt(e.toElement.id)) {
-                                w.done = true;
+                                w.done = !w.done;
                             }
                         });
                     })
