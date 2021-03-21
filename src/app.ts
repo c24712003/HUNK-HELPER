@@ -3,6 +3,7 @@ import linebot from './loaders/linebot';
 import scheduleList from './schedules/ScheduleList';
 import WgerService from './services/WgerService';
 import PuppteerService from './services/PuppteerService';
+import { WgerTodayTrainingMenu } from './models/Wger';
 
 const express = require('express');
 const app = express();
@@ -79,8 +80,10 @@ async function startServer() {
 
     app.get('/updateTodayWorkout', (req, res) => {
         const service = new WgerService();
-        console.log(req)
-        service.save({ id: req.query.userId, date: req.query.date, value: req.query.wger });
+        service.save({ id: req.query.userId, date: req.query.date, value: req.query.wger as WgerTodayTrainingMenu });
+        service.replaceTemplate(req.query.wger).then(rep => {
+            linebot.pushFlexMessage(req.query.userId, rep);
+        });
     });
 
     let server = app.listen(config.port, () => {

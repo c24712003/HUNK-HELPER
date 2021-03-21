@@ -82,8 +82,10 @@ function startServer() {
         });
         app.get('/updateTodayWorkout', (req, res) => {
             const service = new WgerService_1.default();
-            console.log(req);
             service.save({ id: req.query.userId, date: req.query.date, value: req.query.wger });
+            service.replaceTemplate(req.query.wger).then(rep => {
+                linebot_1.default.pushFlexMessage(req.query.userId, rep);
+            });
         });
         let server = app.listen(config_1.default.port, () => {
             console.log("App now running on port", server.address().port);

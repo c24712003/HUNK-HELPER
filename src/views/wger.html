@@ -134,7 +134,7 @@
     <div id="app">
         <div class="list-section">
             <label class="item" v-for="item in workouts.items">
-                <input type="checkbox" name="optiona" id="item.id" :checked="item.done" />
+                <input type="checkbox" name="optiona" :id="item.id" :checked="item.done" />
                 <div>
                     <div v-for="i in item.item_setting_list">
                         <span class="checkboxtext">
@@ -212,7 +212,6 @@
                 axios.get('https://hunk-helper.herokuapp.com/getTodayWorkout', { params: { userId: self.profile['userId'], date: self.date } }).then(res => {
                     console.log(res);
                     self.workouts = res.data;
-                    console.log(self.workouts);
                     self.setCheckboxs();
                 }).catch(e => {
                     console.log(e);
@@ -233,6 +232,7 @@
                 checkboxs.forEach(checkbox => {
                     checkbox.addEventListener('click', (e) => {
                         const cb = this;
+                        console.log(e.id);
 
                         if (e.shiftKey && cb.checked) {
                             let inBetween = false;
@@ -240,26 +240,25 @@
                             checkboxes.forEach(checkbox => {
                                 if (checkbox === cb || checkbox === lastChecked) {
                                     inBetween = !inBetween;
+                                    self.workouts.forEach(w => {
+                                        if (w.id === e.id) {
+                                            w.done = false;
+                                        }
+                                    });
                                 }
 
                                 if (inBetween) {
                                     checkbox.checked = true;
-                                }
-                            });
-
-                            self.workouts.forEach(w => {
-                                if (w.id === e.id) {
-                                    w.done = false;
+                                    self.workouts.forEach(w => {
+                                        if (w.id === e.id) {
+                                            w.done = true;
+                                        }
+                                    });
                                 }
                             });
                         }
 
                         self.lastChecked = cb;
-                        self.workouts.forEach(w => {
-                            if (w.id === e.id) {
-                                w.done = true;
-                            }
-                        });
                     })
                 });
             }

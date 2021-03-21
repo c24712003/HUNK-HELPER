@@ -69,7 +69,7 @@ let trainitem = () => {
                 "cornerRadius": "30px",
                 "height": "24px",
                 "width": "24px",
-                "borderColor": "#ADADAD",
+                "borderColor": "{~CircleColor~}",
                 "borderWidth": "2px"
               },
               {

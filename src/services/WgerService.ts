@@ -154,6 +154,7 @@ export default class WgerService implements IService {
                 let i = trainitem()
                     .replace('{~ItemName~}', w.is_super_set ? `${map[ed]} (超級組)` : map[ed])
                     .replace('{~ItemSets~}', w.item_setting_list[w.exercise_ids.indexOf(ed)].setting_text)
+                    .replace('{~CircleColor~}', w.done ? "#28FF28" : "#ADADAD");
                 items += i;
 
                 if (w.exercise_ids[w.exercise_ids.length - 1] !== ed) {
