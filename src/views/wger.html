@@ -230,15 +230,15 @@
             setCheckboxs: function () {
                 const self = this;
                 const checkboxs = document.querySelectorAll('.list-section input[type=checkbox]');
-                console.log(checkboxs);
 
                 checkboxs.forEach(checkbox => {
                     checkbox.addEventListener('click', (e) => {
                         const cb = this;
-
+                        console.log(self.workouts);
+                        console.log(self.workouts.items);
                         if (e.shiftKey && cb.checked) {
                             let inBetween = false;
-
+                            
                             checkboxes.forEach(checkbox => {
                                 if (checkbox === cb || checkbox === lastChecked) {
                                     inBetween = !inBetween;
