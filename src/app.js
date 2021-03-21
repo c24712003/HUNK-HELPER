@@ -82,7 +82,7 @@ function startServer() {
         });
         app.get('/updateTodayWorkout', (req, res) => {
             const service = new WgerService_1.default();
-            service.save({ id: req.query.userId, date: req.query.date, value: req.query.wger });
+            service.save({ id: req.query.userId, date: req.query.date, value: JSON.parse(req.query.wger) });
             service.replaceTemplate(req.query.wger).then(rep => {
                 linebot_1.default.pushFlexMessage(req.query.userId, rep);
             });

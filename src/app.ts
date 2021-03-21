@@ -80,7 +80,7 @@ async function startServer() {
 
     app.get('/updateTodayWorkout', (req, res) => {
         const service = new WgerService();
-        service.save({ id: req.query.userId, date: req.query.date, value: req.query.wger as WgerTodayTrainingMenu });
+        service.save({ id: req.query.userId, date: req.query.date, value: JSON.parse(req.query.wger) as WgerTodayTrainingMenu });
         service.replaceTemplate(req.query.wger).then(rep => {
             linebot.pushFlexMessage(req.query.userId, rep);
         });
