@@ -234,7 +234,7 @@
                 checkboxs.forEach(checkbox => {
                     checkbox.addEventListener('click', (e) => {
                         const cb = this;
-                        if (e.shiftKey && cb.checked) {
+                 
                             let inBetween = false;
                             
                             checkboxes.forEach(checkbox => {
@@ -260,7 +260,7 @@
                                     });
                                 }
                             });
-                        }
+                      
 
                         self.lastChecked = cb;
                     })
