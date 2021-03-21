@@ -52,7 +52,7 @@
 
         .item>div {
             display: flex;
-          flex-direction: column;
+            flex-direction: column;
         }
 
         input[type=checkbox] {
@@ -133,7 +133,7 @@
 <body role="main">
     <div id="app">
         <div class="list-section">
-            <div class="item" v-for="item in workouts.items">
+            <label class="item" v-for="item in workouts.items">
                 <input type="checkbox" name="optiona" id="item.id" :checked="item.done" />
                 <div>
                     <div v-for="i in item.item_setting_list">
@@ -142,7 +142,7 @@
                         </span>
                     </div>
                 </div>
-            </div>
+            </label>
         </div>
         <div class="progress-section">
             <label for="file">完成度</label>
@@ -220,7 +220,7 @@
             },
             updateTodayWorkout: function () {
                 const self = this;
-                axios.get('https://hunk-helper.herokuapp.com/updateTodayWorkout', { params: { userId: self.profile['userId'], date: self.date, wger: self.workouts } }).then(res => {
+                axios.get('https://hunk-helper.herokuapp.com/updateTodayWorkout', { params: { userId: self.profile['userId'], date: self.date, wger: JSON.stringify(self.workouts) } }).then(res => {
                     console.log('update today workout successful!!');
                     liff.closeWindow();
                 }).catch(e => {
