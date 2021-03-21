@@ -199,7 +199,6 @@
             getWgerId: function () {
                 const self = this;
                 axios.get('https://hunk-helper.herokuapp.com/getWorkoutId').then(res => {
-                    console.log(res.data);
                     self.id = res.data['WorkoutId'];
                     self.date = res.data['Date'];
                     self.getTodayWorkout();
@@ -210,9 +209,10 @@
             getTodayWorkout: function () {
                 const self = this;
                 axios.get('https://hunk-helper.herokuapp.com/getTodayWorkout', { params: { userId: self.profile['userId'], date: self.date } }).then(res => {
-                    console.log(res);
                     self.workouts = res.data;
-                    self.setCheckboxs();
+                    setInterval(() =>{
+                        self.setCheckboxs();
+                    }, 500);
                 }).catch(e => {
                     console.log(e);
                 });
