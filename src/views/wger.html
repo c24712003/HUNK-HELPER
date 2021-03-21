@@ -241,7 +241,7 @@
                                 if (checkbox === cb || checkbox === lastChecked) {
                                     inBetween = !inBetween;
                                     self.workouts['items'].forEach(w => {
-                                        if (w.id === e.toElement.id) {
+                                        if (w.id === parseInt(e.toElement.id)) {
                                             w.done = false;
                                         }
                                     });
@@ -250,7 +250,7 @@
                                 if (inBetween) {
                                     checkbox.checked = true;
                                     self.workouts['items'].forEach(w => {
-                                        if (w.id === e.toElement.id) {
+                                        if (w.id === parseInt(e.toElement.id)) {
                                             w.done = true;
                                         }
                                     });
@@ -260,9 +260,7 @@
 
                         self.lastChecked = cb;
                         self.workouts['items'].forEach(w => {
-                                        console.log(w.id);
-                                        console.log(e.toElement.id);
-                                        if (w.id === e.toElement.id) {
+                                        if (w.id === parseInt(e.toElement.id)) {
                                             w.done = true;
                                         }
                                     });
