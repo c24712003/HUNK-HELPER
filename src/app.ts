@@ -79,7 +79,7 @@ async function startServer() {
 
     app.get('/updateTodayWorkout', (req, res) => {
         const service = new WgerService();
-        service.save({ id: req.query.userId, date: req.query.date, value: req.query.workouts });
+        service.save({ id: req.query.userId, date: req.query.date, value: req.query.wger });
     });
 
     let server = app.listen(config.port, () => {
