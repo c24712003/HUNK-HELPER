@@ -242,7 +242,7 @@
                             checkboxes.forEach(checkbox => {
                                 if (checkbox === cb || checkbox === lastChecked) {
                                     inBetween = !inBetween;
-                                    self.workouts.forEach(w => {
+                                    self.workouts.items.forEach(w => {
                                         if (w.id === cb.id) {
                                             w.done = false;
                                         }
@@ -251,7 +251,7 @@
 
                                 if (inBetween) {
                                     checkbox.checked = true;
-                                    self.workouts.forEach(w => {
+                                    self.workouts.items.forEach(w => {
                                         if (w.id === cb.id) {
                                             w.done = true;
                                         }
