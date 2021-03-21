@@ -234,8 +234,6 @@
                 checkboxs.forEach(checkbox => {
                     checkbox.addEventListener('click', (e) => {
                         const cb = this;
-                        console.log(self.workouts);
-                        console.log(self.workouts.items);
                         if (e.shiftKey && cb.checked) {
                             let inBetween = false;
                             
@@ -243,6 +241,8 @@
                                 if (checkbox === cb || checkbox === lastChecked) {
                                     inBetween = !inBetween;
                                     self.workouts.items.forEach(w => {
+                                        console.log(w.id);
+                                        console.log(w.id === cb.id);
                                         if (w.id === cb.id) {
                                             w.done = false;
                                         }
@@ -252,6 +252,8 @@
                                 if (inBetween) {
                                     checkbox.checked = true;
                                     self.workouts.items.forEach(w => {
+                                        console.log(w.id);
+                                        console.log(w.id === cb.id);
                                         if (w.id === cb.id) {
                                             w.done = true;
                                         }
