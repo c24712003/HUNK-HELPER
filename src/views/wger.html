@@ -210,7 +210,7 @@
                 const self = this;
                 axios.get('https://hunk-helper.herokuapp.com/getTodayWorkout', { params: { userId: self.profile['userId'], date: self.date } }).then(res => {
                     self.workouts = res.data;
-                    setInterval(() =>{
+                    setTimeout(() =>{
                         self.setCheckboxs();
                     }, 500);
                 }).catch(e => {
