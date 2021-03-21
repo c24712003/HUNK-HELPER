@@ -234,9 +234,9 @@
                 checkboxs.forEach(checkbox => {
                     checkbox.addEventListener('click', (e) => {
                         const cb = this;
-                 
+                        if (cb.checked) {
                             let inBetween = false;
-                            console.log('');
+                            
                             checkboxes.forEach(checkbox => {
                                 if (checkbox === cb || checkbox === lastChecked) {
                                     inBetween = !inBetween;
@@ -260,9 +260,16 @@
                                     });
                                 }
                             });
-                      
+                        }
 
                         self.lastChecked = cb;
+                        self.workouts.items.forEach(w => {
+                                        console.log(w.id);
+                                        console.log(w.id === cb.id);
+                                        if (w.id === cb.id) {
+                                            w.done = true;
+                                        }
+                                    });
                     })
                 });
             }
