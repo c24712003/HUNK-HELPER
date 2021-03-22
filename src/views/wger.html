@@ -93,7 +93,7 @@
         .progress-section {
             display: flex;
             flex-direction: column;
-            margin: 10% auto;
+            margin: 10% auto 0 auto;
             width: 90%;
             text-align: center;
         }
@@ -108,7 +108,7 @@
         progress {
             margin: 0 auto;
             width: 100%;
-            height: 3em;
+            height: 6em;
         }
 
         .check-all {
@@ -127,6 +127,30 @@
         .check-all:hover {
             color: rgba(0, 0, 0, .56);
         }
+
+        .textarea-section {
+            margin: 0 auto;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 2%;
+        }
+
+        .textarea {
+            height: 100%;
+            width: 100%;
+            padding: 4px;
+            border: 1px solid #888;
+            resize: vertical;
+            overflow: auto;
+            font-size: 20pt;
+        }
+
+        .textarea:empty:before {
+            content: attr(placeholder);
+            color: #bbb;
+        }
     </style>
 </head>
 
@@ -144,9 +168,12 @@
                 </div>
             </label>
         </div>
+        <div class="textarea-section">
+            <textarea class="textarea" contenteditable="true" v-model="remarks" placeholder="輸入備註"></textarea>
+        </div>
         <div class="progress-section">
             <label for="file">完成度</label>
-            <progress id="file" max="100" value="70"></progress>
+            <progress id="file" max="100" value="0"></progress>
         </div>
         <div class="check-record">
             <input class="r-btn" type="button" v-on:click="updateTodayWorkout" value="紀錄">
@@ -171,7 +198,8 @@
             id: 0,
             date: "",
             workouts: null,
-            lastChecked: null
+            lastChecked: null,
+            remarks: ""
         },
         mounted: function () {
             const self = this;
@@ -219,7 +247,7 @@
             },
             updateTodayWorkout: function () {
                 const self = this;
-                console.log(self.workouts);
+                self.workouts['remarks'] = self.remarks;
                 axios.get('https://hunk-helper.herokuapp.com/updateTodayWorkout', { params: { userId: self.profile['userId'], date: self.date, wger: self.workouts } }).then(res => {
                     if (res.data === true) {
                         console.log('update today workout successful!!');
@@ -232,6 +260,7 @@
             setCheckboxs: function () {
                 const self = this;
                 const checkboxs = document.querySelectorAll('.list-section input[type=checkbox]');
+                const progress = document.querySelector('#file');
 
                 checkboxs.forEach(checkbox => {
                     checkbox.addEventListener('click', (e) => {
@@ -262,8 +291,20 @@
 
                         self.lastChecked = cb;
                         self.workouts['items'].forEach(w => {
+                            let everyProgressUnit = (100 / self.workouts['items'].length);
+
                             if (w.id === parseInt(e.toElement.id)) {
+                                if (w.done) {
+                                    if (progress.value !== 0) {
+                                        progress.value -= everyProgressUnit
+                                    }
+                                }
+
                                 w.done = !w.done;
+
+                                if (w.done) {
+                                    progress.value += everyProgressUnit
+                                }
                             }
                         });
                     })

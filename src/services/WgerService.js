@@ -81,7 +81,8 @@ class WgerService {
                         id: 0,
                         workoutName: "",
                         week: "",
-                        items: workoutItems
+                        items: workoutItems,
+                        remarks: ""
                     };
                     if (week === 0) {
                         week = 7;

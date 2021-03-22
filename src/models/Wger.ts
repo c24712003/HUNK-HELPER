@@ -160,6 +160,7 @@ export interface WgerTodayTrainingMenu {
     workoutName: string;
     items: WorkoutItem[];
     date: string;
+    remarks?: string;
 }
 
 export interface WorkoutItem {
