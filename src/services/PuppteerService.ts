@@ -23,7 +23,6 @@ export default class PuppteerService implements IService {
     }
 
     recordDietary(userId: string, nurt: string, date: string): Promise<Nurtrition> {
-        console.log({userId, nurt, date});
         const query = db.collection('nutrition').doc(userId).collection(date);
         let data = JSON.parse(nurt) as Nurtrition;
 

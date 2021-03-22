@@ -242,7 +242,7 @@
             chart: null,
             userId: ""
         },
-        mounted: (() => {
+        mounted: function () {
             const self = this;
             liff.init({
                 liffId: '1655708537-8xKnrzvx'
@@ -263,7 +263,7 @@
             }).catch((err) => {
                 console.log('初始化失敗')
             });
-        }),
+        },
         methods: {
             getFoodInfo: function () {
                 const self = this;

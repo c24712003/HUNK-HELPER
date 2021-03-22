@@ -30,7 +30,6 @@ class PuppteerService {
         });
     }
     recordDietary(userId, nurt, date) {
-        console.log({ userId, nurt, date });
         const query = firebase_1.default.collection('nutrition').doc(userId).collection(date);
         let data = JSON.parse(nurt);
         return new Promise((res, rej) => {
