@@ -239,7 +239,8 @@
             succ: "",
             empty: "",
             dateTime: "2021-03-06",
-            chart: null
+            chart: null,
+            userId: ""
         },
         mounted: (() => {
             const self = this;
@@ -249,16 +250,14 @@
                 if (!liff.isLoggedIn()) {
                     liff.login().then(r => {
                         liff.getProfile().then(p => {
-                            console.log(p);
                             self.profile = p;
-                            console.log(self.profile);
+                            self.userId = p['userId'];
                         });
                     });
                 } else {
                     liff.getProfile().then(p => {
-                        console.log(p);
                         self.profile = p;
-                        console.log(self.profile);
+                        self.userId = p['userId'];
                     });
                 }
             }).catch((err) => {
@@ -294,10 +293,8 @@
                 self.result.calories = Math.round(parseInt(self.result.calories) * parseInt(self.unit));
                 self.result.unit = self.unit;
                 self.initFoodInfoPie();
-
-                console.log(self.profile);
                 axios.get('https://hunk-helper.herokuapp.com/recordDietary',
-                    { params: { userId: self.profile['userId'], result: self.result, date: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}` } })
+                    { params: { userId: self.userId, result: self.result, date: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}` } })
                     .then(res => {
                         console.log('Success');
                         if (res.data === true) {
@@ -320,7 +317,7 @@
                 console.log(self.dateTime);
                 let dt = self.dateTime.split('-');
                 axios.get('https://hunk-helper.herokuapp.com/getDateDietaryRecord',
-                    { params: { userId: self.profile['userId'], date: `${dt[0]}-${parseInt(dt[1])}-${parseInt(dt[2])}` } })
+                    { params: { userId: self.userId, date: `${dt[0]}-${parseInt(dt[1])}-${parseInt(dt[2])}` } })
                     .then(res => {
                         if (res.data) {
                             console.log("");
