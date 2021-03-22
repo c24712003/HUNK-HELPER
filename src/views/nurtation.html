@@ -228,7 +228,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 
 <script>
-    const liffID = '1655708537-8xKnrzvx';
     let app = new Vue({
         el: '#app',
         data: {
@@ -250,12 +249,16 @@
                 if (!liff.isLoggedIn()) {
                     liff.login().then(r => {
                         liff.getProfile().then(p => {
+                            console.log(p);
                             self.profile = p;
+                            console.log(self.profile);
                         });
                     });
                 } else {
                     liff.getProfile().then(p => {
+                        console.log(p);
                         self.profile = p;
+                        console.log(self.profile);
                     });
                 }
             }).catch((err) => {
