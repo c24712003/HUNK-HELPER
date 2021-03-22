@@ -294,7 +294,7 @@
                 self.result.unit = self.unit;
                 self.initFoodInfoPie();
                 axios.get('https://hunk-helper.herokuapp.com/recordDietary',
-                    { params: { userId: self.userId, result: self.result, date: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}` } })
+                    { params: { userId: this.userId, result: self.result, date: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}` } })
                     .then(res => {
                         console.log('Success');
                         if (res.data === true) {
@@ -317,7 +317,7 @@
                 console.log(self.dateTime);
                 let dt = self.dateTime.split('-');
                 axios.get('https://hunk-helper.herokuapp.com/getDateDietaryRecord',
-                    { params: { userId: self.userId, date: `${dt[0]}-${parseInt(dt[1])}-${parseInt(dt[2])}` } })
+                    { params: { userId: this.userId, date: `${dt[0]}-${parseInt(dt[1])}-${parseInt(dt[2])}` } })
                     .then(res => {
                         if (res.data) {
                             console.log("");
