@@ -2,6 +2,10 @@
 
 <head>
     <style>
+        html {
+            background: lightgray;
+        }
+
         #app .section1 {
             display: flex;
             flex-direction: column;
@@ -278,16 +282,17 @@
                 const date = new Date();
                 self.result.ingredients.forEach(e => {
                     if (e.value !== "--") {
-                        e.value = Math.round(e.value * self.unit);
+                        e.value = Math.round(parseInt(e.value) * parseInt(self.unit));
                     } else {
                         e.value = '0';
                     }
                 });
 
-                self.result.calories = Math.round(self.result.calories * self.units);
+                self.result.calories = Math.round(parseInt(self.result.calories) * parseInt(self.units));
                 self.result.unit = self.unit;
                 self.initFoodInfoPie();
 
+                console.log(self.profile);
                 axios.get('https://hunk-helper.herokuapp.com/recordDietary',
                     { params: { userId: self.profile['userId'], result: self.result, date: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}` } })
                     .then(res => {
