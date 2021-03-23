@@ -52,7 +52,7 @@ class PuppteerService {
                         d.calories += data.calories;
                         d.dateFoodList.push(data.name);
                         d.ingredients.forEach(i => {
-                            i["value"] += data.ingredients[d.ingredients.indexOf(i)]["value"];
+                            i["value"] = (parseInt(i["value"]) + parseInt(data.ingredients[d.ingredients.indexOf(i)]["value"])).toString();
                         });
                         d.unit = "";
                         d.name = "";
