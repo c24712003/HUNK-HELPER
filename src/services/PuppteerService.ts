@@ -7,6 +7,14 @@ import { IService } from '../interfaces/IService';
 import db from '../loaders/firebase';
 
 const URL = 'https://www.myfitnesspal.com'
+const BMR = 2025;
+const TBMR = 3139;
+const DietaryFiber = 30;
+const Portein = 186;
+const Carb = 512;
+const FAT = 133;
+const Sodium = 2400;
+const Sugar = 200;
 
 export default class PuppteerService implements IService {
     getDateDietaryRecord(userId: string, date: string): Promise<Nurtrition> {
@@ -82,6 +90,26 @@ export default class PuppteerService implements IService {
                     }
                 });
             });
+        })
+    }
+
+    calcNurtrition(nurt): Promise<string> {
+        let data = JSON.parse(nurt) as Nurtrition;
+        const arr = new Map([["碳水化合", 512 ], [ "膳食纖維", 30], [ "糖", 200], [ "蛋白質", 186 ], [ "脂肪", 133], [ "鈉", 2400]])
+        let str = ""
+
+        return new Promise((res, rej) => {
+            let c = TBMR - data.calories;
+            str += c < 0 ? `今日熱量已過量` : `熱量赤字: ${c}卡%0D%0A`;
+
+            data.ingredients.forEach(i => {
+                if (arr.has(i.name)) {
+                    let n = arr.get[i.name] - parseInt(i.value);
+                    str += n < 0 ? `今日${i.name}已過量` : `熱量赤字: ${n}卡%0D%0A`;
+                }
+            });
+
+            res(str)
         })
     }
 

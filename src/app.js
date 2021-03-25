@@ -29,19 +29,19 @@ function startServer() {
         app.get('/nurtation.html', (req, res) => {
             res.sendFile(__dirname + '/views/nurtation.html');
         });
-        app.get('/wger.html', (req, res) => {
-            console.log("");
-            res.sendFile(__dirname + '/views/wger.html');
-        });
         app.get('/getFoodInfo', (req, res) => {
             const service = new PuppteerService_1.default();
             service.getMyFitnessPalFoodInfo(req.query.food).then(data => res.end(JSON.stringify(data)));
         });
         app.get('/recordDietary', (req, res) => {
             const service = new PuppteerService_1.default();
-            service.recordDietary(req.query.userId, req.query.result, req.query.date).then(n => {
+            const id = req.query.userId;
+            service.recordDietary(id, req.query.result, req.query.date).then(n => {
                 service.replaceTemplate(n, true).then(fm => {
-                    linebot_1.default.pushFlexMessage(req.query.userId, fm);
+                    service.calcNurtrition(req.query.result).then(msg => {
+                        linebot_1.default.pushFlexMessage(id, fm);
+                        linebot_1.default.pushMessage(id, msg);
+                    });
                     res.end(JSON.stringify(true));
                 });
             });
@@ -59,6 +59,10 @@ function startServer() {
                     });
                 }
             });
+        });
+        app.get('/wger.html', (req, res) => {
+            console.log("");
+            res.sendFile(__dirname + '/views/wger.html');
         });
         app.get('/getWorkoutId', (req, res) => {
             const service = new WgerService_1.default();
@@ -85,6 +89,8 @@ function startServer() {
             const data = JSON.parse(req.query.wger);
             service.replaceTemplate(data).then(rep => {
                 linebot_1.default.pushFlexMessage(req.query.userId, rep);
+                if (data.remarks && data.remarks !== "")
+                    linebot_1.default.pushMessage(req.query.userId, data.remarks);
                 service.save({ id: req.query.userId, date: req.query.date, value: data });
                 res.end(JSON.stringify(true));
             });

@@ -22,11 +22,6 @@ async function startServer() {
         res.sendFile(__dirname + '/views/nurtation.html');
     });
 
-    app.get('/wger.html', (req, res) => {
-        console.log("");
-        res.sendFile(__dirname + '/views/wger.html');
-    });
-
     app.get('/getFoodInfo', (req, res) => {
         const service = new PuppteerService();
 
@@ -35,9 +30,13 @@ async function startServer() {
 
     app.get('/recordDietary', (req, res) => {
         const service = new PuppteerService();
-        service.recordDietary(req.query.userId, req.query.result, req.query.date).then(n => {
+        const id = req.query.userId;
+        service.recordDietary(id, req.query.result, req.query.date).then(n => {
             service.replaceTemplate(n, true).then(fm => {
-                linebot.pushFlexMessage(req.query.userId, fm);
+                service.calcNurtrition(req.query.result).then(msg => {
+                    linebot.pushFlexMessage(id, fm);
+                    linebot.pushMessage(id, msg);
+                });
                 res.end(JSON.stringify(true));
             })
         });
@@ -55,6 +54,11 @@ async function startServer() {
                 });
             }
         });
+    });
+
+    app.get('/wger.html', (req, res) => {
+        console.log("");
+        res.sendFile(__dirname + '/views/wger.html');
     });
 
     app.get('/getWorkoutId', (req, res) => {
@@ -80,9 +84,11 @@ async function startServer() {
 
     app.get('/updateTodayWorkout', (req, res) => {
         const service = new WgerService();
-        const data = JSON.parse(req.query.wger) as WgerTodayTrainingMenu; 
+        const data = JSON.parse(req.query.wger) as WgerTodayTrainingMenu;
         service.replaceTemplate(data).then(rep => {
             linebot.pushFlexMessage(req.query.userId, rep);
+            if (data.remarks && data.remarks !== "") linebot.pushMessage(req.query.userId, data.remarks);
+
             service.save({ id: req.query.userId, date: req.query.date, value: data });
             res.end(JSON.stringify(true));
         });
