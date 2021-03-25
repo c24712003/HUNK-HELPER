@@ -33,7 +33,7 @@ async function startServer() {
         const id = req.query.userId;
         service.recordDietary(id, req.query.result, req.query.date).then(n => {
             service.replaceTemplate(n, true).then(fm => {
-                service.calcNurtrition(req.query.result).then(msg => {
+                service.calcNurtrition(n).then(msg => {
                     linebot.pushFlexMessage(id, fm);
                     linebot.pushMessage(id, msg);
                 });

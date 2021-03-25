@@ -100,12 +100,12 @@ export default class PuppteerService implements IService {
 
         return new Promise((res, rej) => {
             let c = TBMR - data.calories;
-            str += c < 0 ? `今日熱量已過量` : `熱量赤字: ${c}卡%0D%0A`;
+            str += c < 0 ? `今日熱量已過量` : `熱量赤字: ${c}卡`+ "%0D%0A";
 
             data.ingredients.forEach(i => {
                 if (arr.has(i.name)) {
                     let n = arr.get[i.name] - parseInt(i.value);
-                    str += n < 0 ? `今日${i.name}已過量` : `熱量赤字: ${n}卡%0D%0A`;
+                    str += n < 0 ? `今日${i.name}已過量` : `${i.name}還需要: ${n}克or毫克` +"%0D%0A";
                 }
             });
 
