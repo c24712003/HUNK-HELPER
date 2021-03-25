@@ -99,12 +99,14 @@ export default class PuppteerService implements IService {
 
         return new Promise((res, rej) => {
             let c = TBMR - nurt.calories;
-            str += c < 0 ? `今日熱量已過量` : `熱量赤字: ${c}卡`+ "%0D%0A";
+            str += c < 0 ? `今日熱量已過量` : `熱量赤字: ${c}卡 , `;
 
             nurt.ingredients.forEach(i => {
                 if (arr.has(i.name)) {
+                    console.log(arr.get[i.name]);
+                    console.log(parseInt(i.value));
                     let n = arr.get[i.name] - parseInt(i.value);
-                    str += n < 0 ? `今日${i.name}已過量`+"%0D%0A" : `${i.name}還需要: ${n}克or毫克` +"%0D%0A";
+                    str += n < 0 ? `今日${i.name}已過量 , ` : `${i.name}還需要: ${n}克or毫克` +"%0D%0A , ";
                 }
             });
 
