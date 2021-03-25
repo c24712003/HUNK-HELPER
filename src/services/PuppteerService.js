@@ -97,16 +97,15 @@ class PuppteerService {
         });
     }
     calcNurtrition(nurt) {
-        let data = JSON.parse(nurt);
         const arr = new Map([["碳水化合", 512], ["膳食纖維", 30], ["糖", 200], ["蛋白質", 186], ["脂肪", 133], ["鈉", 2400]]);
         let str = "";
         return new Promise((res, rej) => {
-            let c = TBMR - data.calories;
+            let c = TBMR - nurt.calories;
             str += c < 0 ? `今日熱量已過量` : `熱量赤字: ${c}卡` + "%0D%0A";
-            data.ingredients.forEach(i => {
+            nurt.ingredients.forEach(i => {
                 if (arr.has(i.name)) {
                     let n = arr.get[i.name] - parseInt(i.value);
-                    str += n < 0 ? `今日${i.name}已過量` : `${i.name}還需要: ${n}克or毫克` + "%0D%0A";
+                    str += n < 0 ? `今日${i.name}已過量` + "%0D%0A" : `${i.name}還需要: ${n}克or毫克` + "%0D%0A";
                 }
             });
             res(str);
