@@ -94,17 +94,17 @@ export default class PuppteerService implements IService {
     }
 
     calcNurtrition(nurt: Nurtrition): Promise<string> {
-        const arr = new Map([["碳水化合", 512 ], [ "膳食纖維", 30], [ "糖", 200], [ "蛋白質", 186 ], [ "脂肪", 133], [ "鈉", 2400]])
+        const arr = new Map([["碳水化合", 512], ["膳食纖維", 30], ["糖", 200], ["蛋白質", 186], ["脂肪", 133], ["鈉", 2400]])
         let str = ""
 
         return new Promise((res, rej) => {
             let c = TBMR - nurt.calories;
-            str += c < 0 ? `今日熱量已過量\n` : `熱量赤字: ${c}卡\n`;
+            str += c < 0 ? `今日熱量已過量\n` : `熱量赤字: ${c} cal\n`;
 
             nurt.ingredients.forEach(i => {
                 if (arr.has(i.name)) {
                     let n = arr.get(i.name) - parseInt(i.value);
-                    str += n < 0 ? `今日${i.name}已過量\n` : `${i.name}還需要: ${n}克or毫克\n`;
+                    str += n < 0 ? `今日${i.name}已過量\n` : `${i.name}還需要: ${n} ${i.name === "納" ? 'mg' : 'g'}\n`;
                 }
             });
 
