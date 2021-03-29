@@ -12,4 +12,4 @@
 6. MyFitnessPal資料爬蟲(使用puppteer.js)
 
 紀錄今日飲食
-
+![image](https://github.com/c24712003/HUNK-HELPER/blob/main/recordnurtation.gif)
