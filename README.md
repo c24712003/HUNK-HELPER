@@ -11,5 +11,6 @@
 5. Wger Api (申請會員能夠自訂訓練菜單的服務，https://wger.de/en/software/api)
 6. MyFitnessPal資料爬蟲(使用puppteer.js)
 
-紀錄今日飲食
+紀錄今日飲食:
+
 ![image](https://github.com/c24712003/HUNK-HELPER/blob/main/recordnurtation.gif)
