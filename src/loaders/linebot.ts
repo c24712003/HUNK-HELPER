@@ -40,8 +40,6 @@ export default class Linebot {
     private static client = new Client(lineConfig);
 
     static handleEvent(event: any) {
-        event = JSON.parse(event);
-
         switch (event.type) {
             case 'join':
                 break;
