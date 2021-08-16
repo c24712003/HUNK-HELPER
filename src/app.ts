@@ -4,6 +4,7 @@ import scheduleList from './schedules/ScheduleList';
 import WgerService from './services/WgerService';
 import PuppteerService from './services/PuppteerService';
 import { WgerTodayTrainingMenu } from './models/Wger';
+import { Console } from 'console';
 
 const express = require('express');
 const app = express();
@@ -15,7 +16,9 @@ async function startServer() {
         try {
             await linebot.handleEvent(req.body.events[0]);
             res.json(res);
-        } catch (err) { }
+        } catch (err) {
+            console.log(err);
+         }
     });
 
     app.get('/nurtation.html', (req, res) => {

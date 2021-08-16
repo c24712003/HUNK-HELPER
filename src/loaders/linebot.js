@@ -114,7 +114,6 @@ class Linebot {
                     t = NEWS_1.news();
                     break;
                 case '智慧客服':
-                    // ?
                     break;
                 case '最新活動照片':
                     // ?
