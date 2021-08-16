@@ -21,7 +21,7 @@ function startServer() {
         app.post('/', linebot_1.default.middware, (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
                 yield linebot_1.default.handleEvent(req.body.events[0]);
-                res.json(res);
+                //res.json(res);
             }
             catch (err) {
                 console.log(err);

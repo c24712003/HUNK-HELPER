@@ -44,7 +44,7 @@ const healthCareDemo = {
 };
 class Linebot {
     static handleEvent(event) {
-        console.log(event);
+        event = JSON.parse(event);
         switch (event.type) {
             case 'join':
                 break;
