@@ -40,6 +40,8 @@ export default class Linebot {
     private static client = new Client(lineConfig);
 
     static handleEvent(event: any) {
+        console.log(event);
+
         switch (event.type) {
             case 'join':
                 break;
@@ -113,7 +115,7 @@ export default class Linebot {
                 t = news();
                 break;
             case '智慧客服':
-                
+
                 break;
             case '最新活動照片':
                 // ?
