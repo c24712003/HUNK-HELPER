@@ -171,7 +171,7 @@ class PuppteerService {
                     .each((i, e) => {
                     result.calories = e.children[0]['data'];
                 });
-                $('.jss95').each((i, e) => map.set(e.children[0]['data'].toString(), e.children[0].next['children'][0]['data']));
+                //$('.jss95').each((i, e) => map.set(e.children[0]['data'].toString(), e.children[0].next['children'][0]['data']))
                 result.ingredients = Array.from(map, ([name, value]) => ({ name, value }));
                 this.save({ food: food, value: result });
                 res(result);

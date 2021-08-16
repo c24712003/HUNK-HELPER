@@ -1,14 +1,46 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const config_1 = require("../config");
 const bot_sdk_1 = require("@line/bot-sdk");
 const TMDBApiService_1 = require("../services/TMDBApiService");
 const WgerService_1 = require("../services/WgerService");
 const PuppteerService_1 = require("../services/PuppteerService");
+const HEALTHCARE_1 = require("../template//demo/HEALTHCARE");
+const PAYMENTRECORD_1 = require("../template/demo/PAYMENTRECORD");
+const NEWS_1 = require("../template/demo/NEWS");
+const LineMessage_1 = require("../models/LineMessage");
 const keyWords = ['找電影', '體重', '體重表', '食物'];
 const lineConfig = {
     channelAccessToken: config_1.default.line_bot.channelAccessToken,
     channelSecret: config_1.default.line_bot.channelSecret
+};
+const paymentRecordDemo = {
+    Name: "沈美秀",
+    Date: "2021-08-13",
+    DateRange: "2021-11-01 ~ 2021-11-30",
+    Price: 43000,
+    PaymentDate: "未付款",
+    PaymentMethod: "尚未付款"
+};
+const healthCareDemo = {
+    Name: "沈美秀",
+    DateTime: "2021-08-13",
+    Sex: "feminine",
+    Temperature: "36.9度",
+    Pulse: "77下",
+    Breathe: 17,
+    Shrinkage: 120,
+    BloodOxygen: 98,
+    DiastolicBloodPressure: 68
 };
 class Linebot {
     static handleEvent(event) {
@@ -20,7 +52,8 @@ class Linebot {
             case 'message':
                 switch (event.message.type) {
                     case 'text':
-                        this.messageTextToService(event.message.text).then(msg => this.client.replyMessage(event.replyToken, msg));
+                        this.doDemoThing(event.message.text).then(msg => this.client.replyMessage(event.replyToken, msg));
+                        //this.messageTextToService(event.message.text).then(msg => this.client.replyMessage(event.replyToken, msg));
                         break;
                     case 'image':
                         //TODO
@@ -43,6 +76,53 @@ class Linebot {
     }
     static pushFlexMessage(to, msg) {
         this.client.pushMessage(to, msg);
+    }
+    static doDemoThing(msg) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let result = {
+                type: LineMessage_1.messageType.flexMessage,
+                altText: "",
+                contents: ""
+            };
+            let t = "";
+            switch (msg) {
+                case '家屬管理':
+                    // TODO
+                    break;
+                case '繳費紀錄':
+                    t = PAYMENTRECORD_1.paymentrecord()
+                        .replace('{~Name~}', paymentRecordDemo.Name)
+                        .replace('{~Date~}', paymentRecordDemo.Date)
+                        .replace('{~DateRange~}', paymentRecordDemo.DateRange)
+                        .replace('{~PaymentDate~}', paymentRecordDemo.PaymentDate)
+                        .replace('{~PaymentMethod~}', paymentRecordDemo.PaymentMethod)
+                        .replace('{~Price~}', paymentRecordDemo.Price.toString());
+                    break;
+                case '健康狀況':
+                    t = HEALTHCARE_1.healthcare()
+                        .replace('{~Name~}', healthCareDemo.Name)
+                        .replace('{~Sex~}', healthCareDemo.Sex === 'Male' ? 'man' : 'woman-head-emoji')
+                        .replace('{~DateTime~}', healthCareDemo.DateTime)
+                        .replace('{~BloodOxygen~}', healthCareDemo.BloodOxygen.toString())
+                        .replace('{~Breathe~}', healthCareDemo.Breathe.toString())
+                        .replace('{~DiastolicBloodPressure~}', healthCareDemo.DiastolicBloodPressure.toString())
+                        .replace('{~Pulse~}', healthCareDemo.Pulse)
+                        .replace('{~Shrinkage~}', healthCareDemo.Shrinkage.toString())
+                        .replace('{~Temperature~}', healthCareDemo.Temperature.toString());
+                    break;
+                case '最新消息':
+                    t = NEWS_1.news();
+                    break;
+                case '智慧客服':
+                    // ?
+                    break;
+                case '最新活動照片':
+                    // ?
+                    break;
+            }
+            result.contents = t;
+            return result;
+        });
     }
     static messageTextToService(msg) {
         return new Promise((res, rej) => {
