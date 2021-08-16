@@ -113,7 +113,7 @@ export default class Linebot {
                 t = news();
                 break;
             case '智慧客服':
-                // ?
+                
                 break;
             case '最新活動照片':
                 // ?
