@@ -86,6 +86,7 @@ class Linebot {
                         });
                         break;
                     case '繳費紀錄':
+                        result.altText = "繳費紀錄";
                         let contents = PAYMENTRECORD_1.paymentrecord()
                             .replace('{~Name~}', paymentRecordDemo.Name)
                             .replace('{~Date~}', paymentRecordDemo.Date)
@@ -100,6 +101,7 @@ class Linebot {
                         });
                         break;
                     case '健康狀況':
+                        result.altText = "健康狀況";
                         result.contents = JSON.parse(HEALTHCARE_1.healthcare()
                             .replace('{~Name~}', healthCareDemo.Name)
                             .replace('{~Sex~}', healthCareDemo.Sex === 'Male' ? 'man' : 'woman-head-emoji')
@@ -113,6 +115,7 @@ class Linebot {
                         res(result);
                         break;
                     case '最新消息':
+                        result.altText = "最新消息";
                         result.contents = JSON.parse(NEWS_1.news());
                         res(result);
                         break;
