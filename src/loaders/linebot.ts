@@ -91,7 +91,7 @@ export default class Linebot {
                     case '家屬管理':
                         res({
                             type: "text",
-                            text: msg
+                            text: "TO DO"
                         } as TextMessage);
                         break;
                     case '繳費紀錄':
@@ -125,10 +125,16 @@ export default class Linebot {
                         res(result);
                         break;
                     case '智慧客服':
-
+                        res({
+                            type: "text",
+                            text: "TO DO"
+                        } as TextMessage);
                         break;
                     case '最新活動照片':
-                        // ?
+                        res({
+                            type: "text",
+                            text: "TO DO"
+                        } as TextMessage);
                         break;
                     default:
                         res({
