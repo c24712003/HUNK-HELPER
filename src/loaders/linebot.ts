@@ -96,13 +96,7 @@ export default class Linebot {
                         break;
                     case '繳費紀錄':
                         result.altText = "繳費紀錄";
-                        result.contents = JSON.parse(paymentrecord()
-                            .replace('{~Name~}', paymentRecordDemo.Name)
-                            .replace('{~Date~}', paymentRecordDemo.Date)
-                            .replace('{~DateRange~}', paymentRecordDemo.DateRange)
-                            .replace('{~PaymentDate~}', paymentRecordDemo.PaymentDate)
-                            .replace('{~PaymentMethod~}', paymentRecordDemo.PaymentMethod)
-                            .replace('{~Price~}', paymentRecordDemo.Price.toString()));
+                        result.contents = JSON.parse(paymentrecord());
                         console.log(result);
                         res(result);
                         break;
