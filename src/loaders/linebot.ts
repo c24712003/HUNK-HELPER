@@ -48,6 +48,7 @@ export default class Linebot {
             case 'message':
                 switch (event.message.type) {
                     case 'text':
+                        console.log('-------------------do message-----------------------');
                         this.doDemoThing(event.message.text).then(msg => this.client.replyMessage(event.replyToken, msg));
                         //this.messageTextToService(event.message.text).then(msg => this.client.replyMessage(event.replyToken, msg));
                         break;
