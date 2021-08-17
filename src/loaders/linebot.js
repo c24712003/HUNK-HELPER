@@ -82,7 +82,7 @@ class Linebot {
                     case '家屬管理':
                         res({
                             type: "text",
-                            text: msg
+                            text: "TO DO"
                         });
                         break;
                     case '繳費紀錄':
@@ -94,6 +94,7 @@ class Linebot {
                             .replace('{~PaymentDate~}', paymentRecordDemo.PaymentDate)
                             .replace('{~PaymentMethod~}', paymentRecordDemo.PaymentMethod)
                             .replace('{~Price~}', paymentRecordDemo.Price.toString()));
+                        console.log(result);
                         res(result);
                         break;
                     case '健康狀況':
@@ -116,9 +117,16 @@ class Linebot {
                         res(result);
                         break;
                     case '智慧客服':
+                        res({
+                            type: "text",
+                            text: "TO DO"
+                        });
                         break;
                     case '最新活動照片':
-                        // ?
+                        res({
+                            type: "text",
+                            text: "TO DO"
+                        });
                         break;
                     default:
                         res({

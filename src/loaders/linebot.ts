@@ -103,6 +103,7 @@ export default class Linebot {
                             .replace('{~PaymentDate~}', paymentRecordDemo.PaymentDate)
                             .replace('{~PaymentMethod~}', paymentRecordDemo.PaymentMethod)
                             .replace('{~Price~}', paymentRecordDemo.Price.toString()));
+                        console.log(result);
                         res(result);
                         break;
                     case '健康狀況':
