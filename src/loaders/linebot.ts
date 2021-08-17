@@ -77,53 +77,63 @@ export default class Linebot {
         this.client.pushMessage(to, msg);
     }
 
-    private static async doDemoThing(msg: string): Promise<any> {
-        let result: LineFlexBubbleMessage = {
-            type: messageType.flexMessage,
-            altText: "",
-            contents: ""
-        };
-        let t = "";
+    private static doDemoThing(msg: string): Promise<any> {
+        return new Promise((res, rej) => {
+            let result: LineFlexBubbleMessage = {
+                type: messageType.flexMessage,
+                altText: "",
+                contents: ""
+            };
+            let t = "";
 
-        switch (msg) {
-            case '家屬管理':
-                // TODO
-                break;
-            case '繳費紀錄':
-                t = paymentrecord()
-                    .replace('{~Name~}', paymentRecordDemo.Name)
-                    .replace('{~Date~}', paymentRecordDemo.Date)
-                    .replace('{~DateRange~}', paymentRecordDemo.DateRange)
-                    .replace('{~PaymentDate~}', paymentRecordDemo.PaymentDate)
-                    .replace('{~PaymentMethod~}', paymentRecordDemo.PaymentMethod)
-                    .replace('{~Price~}', paymentRecordDemo.Price.toString());
-                break;
-            case '健康狀況':
-                t = healthcare()
-                    .replace('{~Name~}', healthCareDemo.Name)
-                    .replace('{~Sex~}', healthCareDemo.Sex === 'Male' ? 'man' : 'woman-head-emoji')
-                    .replace('{~DateTime~}', healthCareDemo.DateTime)
-                    .replace('{~BloodOxygen~}', healthCareDemo.BloodOxygen.toString())
-                    .replace('{~Breathe~}', healthCareDemo.Breathe.toString())
-                    .replace('{~DiastolicBloodPressure~}', healthCareDemo.DiastolicBloodPressure.toString())
-                    .replace('{~Pulse~}', healthCareDemo.Pulse)
-                    .replace('{~Shrinkage~}', healthCareDemo.Shrinkage.toString())
-                    .replace('{~Temperature~}', healthCareDemo.Temperature.toString());
-                break;
-            case '最新消息':
-                t = news();
-                break;
-            case '智慧客服':
+            try {
+                switch (msg) {
+                    case '家屬管理':
+                        // TODO
+                        break;
+                    case '繳費紀錄':
+                        result.contents = paymentrecord()
+                            .replace('{~Name~}', paymentRecordDemo.Name)
+                            .replace('{~Date~}', paymentRecordDemo.Date)
+                            .replace('{~DateRange~}', paymentRecordDemo.DateRange)
+                            .replace('{~PaymentDate~}', paymentRecordDemo.PaymentDate)
+                            .replace('{~PaymentMethod~}', paymentRecordDemo.PaymentMethod)
+                            .replace('{~Price~}', paymentRecordDemo.Price.toString());
+                        res(result);
+                        break;
+                    case '健康狀況':
+                        result.contents = healthcare()
+                            .replace('{~Name~}', healthCareDemo.Name)
+                            .replace('{~Sex~}', healthCareDemo.Sex === 'Male' ? 'man' : 'woman-head-emoji')
+                            .replace('{~DateTime~}', healthCareDemo.DateTime)
+                            .replace('{~BloodOxygen~}', healthCareDemo.BloodOxygen.toString())
+                            .replace('{~Breathe~}', healthCareDemo.Breathe.toString())
+                            .replace('{~DiastolicBloodPressure~}', healthCareDemo.DiastolicBloodPressure.toString())
+                            .replace('{~Pulse~}', healthCareDemo.Pulse)
+                            .replace('{~Shrinkage~}', healthCareDemo.Shrinkage.toString())
+                            .replace('{~Temperature~}', healthCareDemo.Temperature.toString());
+                        res(result);
+                        break;
+                    case '最新消息':
+                        result.contents = news;
+                        res(result);
+                        break;
+                    case '智慧客服':
 
-                break;
-            case '最新活動照片':
-                // ?
-                break;
-        }
-
-        result.contents = t;
-
-        return result;
+                        break;
+                    case '最新活動照片':
+                        // ?
+                        break;
+                    default:
+                        res({
+                            type: "text",
+                            text: msg
+                        } as TextMessage);
+                }
+            } catch (e) {
+                console.log(e);
+            }
+        });
     }
 
     private static messageTextToService(msg: string): Promise<any> {

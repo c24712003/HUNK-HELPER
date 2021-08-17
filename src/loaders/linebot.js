@@ -1,13 +1,4 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const config_1 = require("../config");
 const bot_sdk_1 = require("@line/bot-sdk");
@@ -79,49 +70,60 @@ class Linebot {
         this.client.pushMessage(to, msg);
     }
     static doDemoThing(msg) {
-        return __awaiter(this, void 0, void 0, function* () {
+        return new Promise((res, rej) => {
             let result = {
                 type: LineMessage_1.messageType.flexMessage,
                 altText: "",
                 contents: ""
             };
             let t = "";
-            switch (msg) {
-                case '家屬管理':
-                    // TODO
-                    break;
-                case '繳費紀錄':
-                    t = PAYMENTRECORD_1.paymentrecord()
-                        .replace('{~Name~}', paymentRecordDemo.Name)
-                        .replace('{~Date~}', paymentRecordDemo.Date)
-                        .replace('{~DateRange~}', paymentRecordDemo.DateRange)
-                        .replace('{~PaymentDate~}', paymentRecordDemo.PaymentDate)
-                        .replace('{~PaymentMethod~}', paymentRecordDemo.PaymentMethod)
-                        .replace('{~Price~}', paymentRecordDemo.Price.toString());
-                    break;
-                case '健康狀況':
-                    t = HEALTHCARE_1.healthcare()
-                        .replace('{~Name~}', healthCareDemo.Name)
-                        .replace('{~Sex~}', healthCareDemo.Sex === 'Male' ? 'man' : 'woman-head-emoji')
-                        .replace('{~DateTime~}', healthCareDemo.DateTime)
-                        .replace('{~BloodOxygen~}', healthCareDemo.BloodOxygen.toString())
-                        .replace('{~Breathe~}', healthCareDemo.Breathe.toString())
-                        .replace('{~DiastolicBloodPressure~}', healthCareDemo.DiastolicBloodPressure.toString())
-                        .replace('{~Pulse~}', healthCareDemo.Pulse)
-                        .replace('{~Shrinkage~}', healthCareDemo.Shrinkage.toString())
-                        .replace('{~Temperature~}', healthCareDemo.Temperature.toString());
-                    break;
-                case '最新消息':
-                    t = NEWS_1.news();
-                    break;
-                case '智慧客服':
-                    break;
-                case '最新活動照片':
-                    // ?
-                    break;
+            try {
+                switch (msg) {
+                    case '家屬管理':
+                        // TODO
+                        break;
+                    case '繳費紀錄':
+                        result.contents = PAYMENTRECORD_1.paymentrecord()
+                            .replace('{~Name~}', paymentRecordDemo.Name)
+                            .replace('{~Date~}', paymentRecordDemo.Date)
+                            .replace('{~DateRange~}', paymentRecordDemo.DateRange)
+                            .replace('{~PaymentDate~}', paymentRecordDemo.PaymentDate)
+                            .replace('{~PaymentMethod~}', paymentRecordDemo.PaymentMethod)
+                            .replace('{~Price~}', paymentRecordDemo.Price.toString());
+                        res(result);
+                        break;
+                    case '健康狀況':
+                        result.contents = HEALTHCARE_1.healthcare()
+                            .replace('{~Name~}', healthCareDemo.Name)
+                            .replace('{~Sex~}', healthCareDemo.Sex === 'Male' ? 'man' : 'woman-head-emoji')
+                            .replace('{~DateTime~}', healthCareDemo.DateTime)
+                            .replace('{~BloodOxygen~}', healthCareDemo.BloodOxygen.toString())
+                            .replace('{~Breathe~}', healthCareDemo.Breathe.toString())
+                            .replace('{~DiastolicBloodPressure~}', healthCareDemo.DiastolicBloodPressure.toString())
+                            .replace('{~Pulse~}', healthCareDemo.Pulse)
+                            .replace('{~Shrinkage~}', healthCareDemo.Shrinkage.toString())
+                            .replace('{~Temperature~}', healthCareDemo.Temperature.toString());
+                        res(result);
+                        break;
+                    case '最新消息':
+                        result.contents = NEWS_1.news;
+                        res(result);
+                        break;
+                    case '智慧客服':
+                        break;
+                    case '最新活動照片':
+                        // ?
+                        break;
+                    default:
+                        res({
+                            type: "text",
+                            text: msg
+                        });
+                }
             }
-            result.contents = t;
-            return result;
+            catch (e) {
+                console.log(e);
+            }
         });
     }
     static messageTextToService(msg) {
