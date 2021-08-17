@@ -80,17 +80,24 @@ class Linebot {
             try {
                 switch (msg) {
                     case '家屬管理':
-                        // TODO
+                        res({
+                            type: "text",
+                            text: msg
+                        });
                         break;
                     case '繳費紀錄':
-                        result.contents = PAYMENTRECORD_1.paymentrecord()
+                        let contents = PAYMENTRECORD_1.paymentrecord()
                             .replace('{~Name~}', paymentRecordDemo.Name)
                             .replace('{~Date~}', paymentRecordDemo.Date)
                             .replace('{~DateRange~}', paymentRecordDemo.DateRange)
                             .replace('{~PaymentDate~}', paymentRecordDemo.PaymentDate)
                             .replace('{~PaymentMethod~}', paymentRecordDemo.PaymentMethod)
                             .replace('{~Price~}', paymentRecordDemo.Price.toString());
-                        res(result);
+                        res({
+                            type: LineMessage_1.messageType.flexMessage,
+                            altText: "",
+                            contents: contents
+                        });
                         break;
                     case '健康狀況':
                         result.contents = HEALTHCARE_1.healthcare()
