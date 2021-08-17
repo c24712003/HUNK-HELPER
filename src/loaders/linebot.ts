@@ -105,11 +105,11 @@ export default class Linebot {
                         res({
                             type: messageType.flexMessage,
                             altText: "",
-                            contents: contents
+                            contents: JSON.parse(contents)
                         });
                         break;
                     case '健康狀況':
-                        result.contents = healthcare()
+                        result.contents = JSON.parse(healthcare()
                             .replace('{~Name~}', healthCareDemo.Name)
                             .replace('{~Sex~}', healthCareDemo.Sex === 'Male' ? 'man' : 'woman-head-emoji')
                             .replace('{~DateTime~}', healthCareDemo.DateTime)
@@ -118,11 +118,11 @@ export default class Linebot {
                             .replace('{~DiastolicBloodPressure~}', healthCareDemo.DiastolicBloodPressure.toString())
                             .replace('{~Pulse~}', healthCareDemo.Pulse)
                             .replace('{~Shrinkage~}', healthCareDemo.Shrinkage.toString())
-                            .replace('{~Temperature~}', healthCareDemo.Temperature.toString());
+                            .replace('{~Temperature~}', healthCareDemo.Temperature.toString()));
                         res(result);
                         break;
                     case '最新消息':
-                        result.contents = news;
+                        result.contents = JSON.parse(news());
                         res(result);
                         break;
                     case '智慧客服':
