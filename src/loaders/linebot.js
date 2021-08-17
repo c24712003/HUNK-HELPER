@@ -87,18 +87,14 @@ class Linebot {
                         break;
                     case '繳費紀錄':
                         result.altText = "繳費紀錄";
-                        let contents = PAYMENTRECORD_1.paymentrecord()
+                        result.contents = JSON.parse(PAYMENTRECORD_1.paymentrecord()
                             .replace('{~Name~}', paymentRecordDemo.Name)
                             .replace('{~Date~}', paymentRecordDemo.Date)
                             .replace('{~DateRange~}', paymentRecordDemo.DateRange)
                             .replace('{~PaymentDate~}', paymentRecordDemo.PaymentDate)
                             .replace('{~PaymentMethod~}', paymentRecordDemo.PaymentMethod)
-                            .replace('{~Price~}', paymentRecordDemo.Price.toString());
-                        res({
-                            type: LineMessage_1.messageType.flexMessage,
-                            altText: "",
-                            contents: JSON.parse(contents)
-                        });
+                            .replace('{~Price~}', paymentRecordDemo.Price.toString()));
+                        res(result);
                         break;
                     case '健康狀況':
                         result.altText = "健康狀況";
