@@ -14,9 +14,8 @@ async function startServer() {
 
     app.post('/', linebot.middware, async (req, res) => {
         try {
-            console.log(req.body);
             await linebot.handleEvent(req.body.events[0]);
-            res.json(res);
+            //res.json(res);
         } catch (err) {
             console.log(err);
         }
