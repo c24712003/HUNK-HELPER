@@ -8,6 +8,9 @@ const PuppteerService_1 = require("../services/PuppteerService");
 const HEALTHCARE_1 = require("../template//demo/HEALTHCARE");
 const PAYMENTRECORD_1 = require("../template/demo/PAYMENTRECORD");
 const NEWS_1 = require("../template/demo/NEWS");
+const Accommodation_1 = require("../template/demo/Accommodation");
+const CAROUSEL_1 = require("../template/demo/CAROUSEL");
+const EPIDEMIC_1 = require("../template/demo/EPIDEMIC");
 const LineMessage_1 = require("../models/LineMessage");
 const keyWords = ['找電影', '體重', '體重表', '食物'];
 const lineConfig = {
@@ -111,16 +114,28 @@ class Linebot {
                         res(result);
                         break;
                     case '智慧客服':
-                        res({
-                            type: "text",
-                            text: "TO DO"
-                        });
+                        result.altText = "智慧客服";
+                        result.contents = {
+                            type: LineMessage_1.messageType.flexCarousel,
+                            contents: JSON.parse(CAROUSEL_1.carousel())
+                        };
+                        res(result);
                         break;
                     case '最新活動照片':
                         res({
                             type: "text",
                             text: "TO DO"
                         });
+                        break;
+                    case '疫情資訊':
+                        result.altText = "疫情資訊";
+                        result.contents = JSON.parse(EPIDEMIC_1.epid());
+                        res(result);
+                        break;
+                    case '住宿問題':
+                        result.altText = "住宿問題";
+                        result.contents = JSON.parse(Accommodation_1.acco());
+                        res(result);
                         break;
                     default:
                         res({

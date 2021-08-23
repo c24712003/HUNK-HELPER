@@ -6,7 +6,12 @@ import PuppteerService from '../services/PuppteerService';
 import { healthcare } from '../template//demo/HEALTHCARE';
 import { paymentrecord } from '../template/demo/PAYMENTRECORD';
 import { news } from '../template/demo/NEWS';
+import { traffic } from '../template/demo/TRAFFIC';
+import { acco } from '../template/demo/Accommodation';
+import { carousel } from '../template/demo/CAROUSEL';
+import { epid } from '../template/demo/EPIDEMIC';
 import { LineFlexBubbleMessage, messageType } from '../models/LineMessage';
+import { isReturnStatement } from 'typescript';
 
 const keyWords = ['找電影', '體重', '體重表', '食物'];
 const lineConfig = {
@@ -120,16 +125,29 @@ export default class Linebot {
                         res(result);
                         break;
                     case '智慧客服':
-                        res({
-                            type: "text",
-                            text: "TO DO"
-                        } as TextMessage);
+                        result.altText = "智慧客服";
+                        result.contents = {
+                            type: messageType.flexCarousel,
+                            contents: JSON.parse(carousel())
+                        };
+
+                        res(result);
                         break;
                     case '最新活動照片':
                         res({
                             type: "text",
                             text: "TO DO"
                         } as TextMessage);
+                        break;
+                    case '疫情資訊':
+                        result.altText = "疫情資訊";
+                        result.contents = JSON.parse(epid());
+                        res(result);
+                        break;
+                    case '住宿問題':
+                        result.altText = "住宿問題";
+                        result.contents = JSON.parse(acco());
+                        res(result);
                         break;
                     default:
                         res({
