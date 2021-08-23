@@ -125,13 +125,16 @@ export default class Linebot {
                         res(result);
                         break;
                     case '智慧客服':
-                        result.altText = "智慧客服";
-                        result.contents = {
-                            type: messageType.flexCarousel,
-                            contents: JSON.parse(carousel())
+                        let r = {
+                            type: messageType.flexMessage,
+                            altText: "TMDB Flex Message",
+                            contents: {
+                                type: messageType.flexCarousel,
+                                contents: JSON.parse(carousel())
+                            }
                         };
 
-                        res(result);
+                        res(r);
                         break;
                     case '最新活動照片':
                         res({
