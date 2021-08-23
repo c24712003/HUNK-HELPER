@@ -140,7 +140,7 @@ export let paymentrecord = () => {
                     },
                     {
                       "type": "text",
-                      "text": "{PaymentMethod}",
+                      "text": "{~PaymentMethod~}",
                       "size": "sm",
                       "color": "#000000FF",
                       "align": "end",
