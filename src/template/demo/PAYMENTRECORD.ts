@@ -1,5 +1,5 @@
 export let paymentrecord = () => {
-    return `{
+  return `{
         "type": "bubble",
         "body": {
           "type": "box",
@@ -163,5 +163,5 @@ export let paymentrecord = () => {
             }
           ]
         }
-      }`;
+      }`
 }

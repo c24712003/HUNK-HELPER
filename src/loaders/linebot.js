@@ -90,7 +90,6 @@ class Linebot {
                     case '繳費紀錄':
                         result.altText = "繳費紀錄";
                         result.contents = JSON.parse(PAYMENTRECORD_1.paymentrecord());
-                        console.log(result);
                         res(result);
                         break;
                     case '健康狀況':
@@ -121,8 +120,9 @@ class Linebot {
                         //         contents: JSON.parse(carousel())
                         //     }
                         // };
+                        console.log(JSON.parse(CAROUSEL_1.carousel()));
                         let ii = {
-                            type: LineMessage_1.messageType.flexCarousel,
+                            type: "carousel",
                             contents: JSON.parse(CAROUSEL_1.carousel())
                         };
                         res(ii);
