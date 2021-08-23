@@ -89,7 +89,13 @@ class Linebot {
                         break;
                     case '繳費紀錄':
                         result.altText = "繳費紀錄";
-                        result.contents = JSON.parse(PAYMENTRECORD_1.paymentrecord());
+                        result.contents = JSON.parse(PAYMENTRECORD_1.paymentrecord()
+                            .replace('{~Date~}', paymentRecordDemo.Date)
+                            .replace('{~DateRange~}', paymentRecordDemo.DateRange)
+                            .replace('{~Name~}', paymentRecordDemo.Name)
+                            .replace('{~PaymentDate~}', paymentRecordDemo.PaymentDate)
+                            .replace('{~PaymentMethod~}', paymentRecordDemo.PaymentMethod)
+                            .replace('{~Price~}', paymentRecordDemo.Price.toString()));
                         res(result);
                         break;
                     case '健康狀況':
@@ -133,10 +139,12 @@ class Linebot {
                     case '其他問題':
                         result.altText = "其他問題";
                         result.contents = JSON.parse(Accommodation_1.elseQ());
+                        res(result);
                         break;
                     case '聯絡方式':
                         result.altText = "聯絡方式";
                         result.contents = JSON.parse(Accommodation_1.phone());
+                        res(result);
                         break;
                     case '住宿問題':
                         result.altText = "住宿問題";
