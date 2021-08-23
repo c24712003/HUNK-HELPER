@@ -122,13 +122,21 @@ class Linebot {
                     case '最新活動照片':
                         res({
                             type: "text",
-                            text: "TO DO"
+                            text: "https://www.flickr.com/photos/187985746@N02/collections/72157718223390667/"
                         });
                         break;
                     case '疫情資訊':
                         result.altText = "疫情資訊";
                         result.contents = JSON.parse(EPIDEMIC_1.epid());
                         res(result);
+                        break;
+                    case '其他問題':
+                        result.altText = "其他問題";
+                        result.contents = JSON.parse(Accommodation_1.elseQ());
+                        break;
+                    case '聯絡方式':
+                        result.altText = "聯絡方式";
+                        result.contents = JSON.parse(Accommodation_1.phone());
                         break;
                     case '住宿問題':
                         result.altText = "住宿問題";

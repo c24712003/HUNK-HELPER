@@ -7,7 +7,7 @@ import { healthcare } from '../template//demo/HEALTHCARE';
 import { paymentrecord } from '../template/demo/PAYMENTRECORD';
 import { news } from '../template/demo/NEWS';
 import { traffic } from '../template/demo/TRAFFIC';
-import { acco } from '../template/demo/Accommodation';
+import { acco, elseQ, phone } from '../template/demo/Accommodation';
 import { carousel } from '../template/demo/CAROUSEL';
 import { epid } from '../template/demo/EPIDEMIC';
 import { LineFlexBubbleMessage, LineFlexMessage, messageType } from '../models/LineMessage';
@@ -134,13 +134,21 @@ export default class Linebot {
                     case '最新活動照片':
                         res({
                             type: "text",
-                            text: "TO DO"
+                            text: "https://www.flickr.com/photos/187985746@N02/collections/72157718223390667/"
                         } as TextMessage);
                         break;
                     case '疫情資訊':
                         result.altText = "疫情資訊";
                         result.contents = JSON.parse(epid());
                         res(result);
+                        break;
+                    case '其他問題':
+                        result.altText = "其他問題";
+                        result.contents = JSON.parse(elseQ());
+                        break;
+                    case '聯絡方式':
+                        result.altText = "聯絡方式";
+                        result.contents = JSON.parse(phone());
                         break;
                     case '住宿問題':
                         result.altText = "住宿問題";
