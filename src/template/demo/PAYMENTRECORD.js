@@ -8,11 +8,6 @@ let paymentrecord = () => {
           "type": "box",
           "layout": "vertical",
           "spacing": "md",
-          "action": {
-            "type": "uri",
-            "label": "Action",
-            "uri": "https://linecorp.com"
-          },
           "contents": [
             {
               "type": "text",
@@ -26,12 +21,6 @@ let paymentrecord = () => {
               "type": "box",
               "layout": "baseline",
               "contents": [
-                {
-                  "type": "icon",
-                  "url": "https://img.icons8.com/emoji/48/000000/{~Sex~}.png",
-                  "size": "xl",
-                  "offsetTop": "5px"
-                },
                 {
                   "type": "text",
                   "text": "{~Name~}",
