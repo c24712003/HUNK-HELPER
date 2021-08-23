@@ -9,6 +9,7 @@ const HEALTHCARE_1 = require("../template//demo/HEALTHCARE");
 const PAYMENTRECORD_1 = require("../template/demo/PAYMENTRECORD");
 const NEWS_1 = require("../template/demo/NEWS");
 const Accommodation_1 = require("../template/demo/Accommodation");
+const CAROUSEL_1 = require("../template/demo/CAROUSEL");
 const EPIDEMIC_1 = require("../template/demo/EPIDEMIC");
 const LineMessage_1 = require("../models/LineMessage");
 const keyWords = ['找電影', '體重', '體重表', '食物'];
@@ -111,24 +112,28 @@ class Linebot {
                         result.contents = JSON.parse(NEWS_1.news());
                         res(result);
                         break;
-                    // case '智慧客服':
-                    //     let r: LineFlexMessage = {
-                    //         type: messageType.flexMessage,
-                    //         altText: "智慧客服",
-                    //         contents: {
-                    //             type: messageType.flexCarousel,
-                    //             contents: JSON.parse(carousel())
-                    //         }
-                    //     };
-                    //     res(r);
-                    //     break;
+                    case '智慧客服':
+                        // let r: LineFlexMessage = {
+                        //     type: "flex",
+                        //     altText: "智慧客服",
+                        //     contents: {
+                        //         type: messageType.flexCarousel,
+                        //         contents: JSON.parse(carousel())
+                        //     }
+                        // };
+                        let ii = {
+                            type: LineMessage_1.messageType.flexCarousel,
+                            contents: JSON.parse(CAROUSEL_1.carousel())
+                        };
+                        res(ii);
+                        break;
                     case '最新活動照片':
                         res({
                             type: "text",
                             text: "TO DO"
                         });
                         break;
-                    case '智慧客服':
+                    case '疫情資訊':
                         result.altText = "疫情資訊";
                         result.contents = JSON.parse(EPIDEMIC_1.epid());
                         res(result);

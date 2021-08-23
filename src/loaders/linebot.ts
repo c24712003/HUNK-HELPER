@@ -123,25 +123,30 @@ export default class Linebot {
                         result.contents = JSON.parse(news());
                         res(result);
                         break;
-                    // case '智慧客服':
-                    //     let r: LineFlexMessage = {
-                    //         type: messageType.flexMessage,
-                    //         altText: "智慧客服",
-                    //         contents: {
-                    //             type: messageType.flexCarousel,
-                    //             contents: JSON.parse(carousel())
-                    //         }
-                    //     };
+                    case '智慧客服':
+                        // let r: LineFlexMessage = {
+                        //     type: "flex",
+                        //     altText: "智慧客服",
+                        //     contents: {
+                        //         type: messageType.flexCarousel,
+                        //         contents: JSON.parse(carousel())
+                        //     }
+                        // };
 
-                    //     res(r);
-                    //     break;
+                        let ii = {
+                            type: messageType.flexCarousel,
+                            contents: JSON.parse(carousel())
+                        }
+
+                        res(ii);
+                        break;
                     case '最新活動照片':
                         res({
                             type: "text",
                             text: "TO DO"
                         } as TextMessage);
                         break;
-                    case '智慧客服':
+                    case '疫情資訊':
                         result.altText = "疫情資訊";
                         result.contents = JSON.parse(epid());
                         res(result);
