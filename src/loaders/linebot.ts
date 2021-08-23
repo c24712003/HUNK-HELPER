@@ -123,22 +123,16 @@ export default class Linebot {
                         res(result);
                         break;
                     case '智慧客服':
-                        // let r: LineFlexMessage = {
-                        //     type: "flex",
-                        //     altText: "智慧客服",
-                        //     contents: {
-                        //         type: messageType.flexCarousel,
-                        //         contents: JSON.parse(carousel())
-                        //     }
-                        // };
+                        let r: LineFlexBubbleMessage = {
+                            type: messageType.flexMessage,
+                            altText: "智慧客服",
+                            contents: {
+                                type: messageType.flexCarousel,
+                                contents: JSON.parse(carousel())
+                            }
+                        };
 
-                        console.log(JSON.parse(carousel()));
-                        let ii = {
-                            type: "carousel",
-                            contents: JSON.parse(carousel())
-                        }
-
-                        res(ii);
+                        res(r);
                         break;
                     case '最新活動照片':
                         res({
