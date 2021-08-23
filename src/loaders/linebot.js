@@ -115,10 +115,7 @@ class Linebot {
                         let r = {
                             type: LineMessage_1.messageType.flexMessage,
                             altText: "智慧客服",
-                            contents: {
-                                type: LineMessage_1.messageType.flexCarousel,
-                                contents: JSON.parse(CAROUSEL_1.carousel())
-                            }
+                            contents: JSON.parse(CAROUSEL_1.carousel())
                         };
                         res(r);
                         break;

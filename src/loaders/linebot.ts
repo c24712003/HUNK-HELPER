@@ -126,10 +126,7 @@ export default class Linebot {
                         let r: LineFlexBubbleMessage = {
                             type: messageType.flexMessage,
                             altText: "智慧客服",
-                            contents: {
-                                type: messageType.flexCarousel,
-                                contents: JSON.parse(carousel())
-                            }
+                            contents: JSON.parse(carousel())
                         };
 
                         res(r);
