@@ -10,7 +10,7 @@ import { traffic } from '../template/demo/TRAFFIC';
 import { acco } from '../template/demo/Accommodation';
 import { carousel } from '../template/demo/CAROUSEL';
 import { epid } from '../template/demo/EPIDEMIC';
-import { LineFlexBubbleMessage, messageType } from '../models/LineMessage';
+import { LineFlexBubbleMessage, LineFlexMessage, messageType } from '../models/LineMessage';
 import { isReturnStatement } from 'typescript';
 
 const keyWords = ['找電影', '體重', '體重表', '食物'];
@@ -89,7 +89,6 @@ export default class Linebot {
                 altText: "",
                 contents: ""
             };
-            let t = "";
 
             try {
                 switch (msg) {
@@ -125,9 +124,9 @@ export default class Linebot {
                         res(result);
                         break;
                     case '智慧客服':
-                        let r = {
+                        let r: LineFlexMessage = {
                             type: messageType.flexMessage,
-                            altText: "TMDB Flex Message",
+                            altText: "智慧客服",
                             contents: {
                                 type: messageType.flexCarousel,
                                 contents: JSON.parse(carousel())

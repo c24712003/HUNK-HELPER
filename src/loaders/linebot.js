@@ -79,7 +79,6 @@ class Linebot {
                 altText: "",
                 contents: ""
             };
-            let t = "";
             try {
                 switch (msg) {
                     case '家屬管理':
@@ -116,7 +115,7 @@ class Linebot {
                     case '智慧客服':
                         let r = {
                             type: LineMessage_1.messageType.flexMessage,
-                            altText: "TMDB Flex Message",
+                            altText: "智慧客服",
                             contents: {
                                 type: LineMessage_1.messageType.flexCarousel,
                                 contents: JSON.parse(CAROUSEL_1.carousel())
